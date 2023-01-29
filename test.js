@@ -6,5 +6,3 @@ const Obj = {
 Obj.fn1();
 Obj.fn2();
 
-// 这是test
-// 新增test
