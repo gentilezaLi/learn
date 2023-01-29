@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .container {
+            height: 400px;
+            background-color: #eebefa;
+        }
+
+        .left {
+            height: 400px;
+            width: 200px;
+            background-color: #f783ac;
+            float: left; /* 1. 左列容器开启左浮动 */
+        }
+
+        .content {
+            height: 400px;
+            background-color: #d9480f;
+             /* 3. 使中间自适应的宽度为父级容器减去两个定宽的列 */
+            width: calc(100%-400px);
+        }
+
+        .right {
+            height: 400px;
+            width: 200px;
+            background-color: #c0eb75;
+            float: right; /* 2. 右列容器开启右浮动 */
+        }
+
+        .left,
+        .content,
+        .right {
+            font-size: 70px;
+            line-height: 400px;
+            text-align: center;
+        }
+
+        /* 清除浮动 */
+        .clearfix:after {
+            content: '';
+            display: block;
+            height: 0;
+            clear: both;
+            visibility: hidden;
+        }
+    </style>
+
+    <!-- 通过 float 实现方案二
+        
+        1.左列容器开启左浮动
+
+         2.右列容器开启右浮动
+
+         3.使中间自适应的宽度为父级容器减去两个定宽的列-->
+</head>
+
+
+
+
+<body>
+    <!-- 解决高度塌陷 -->
+    <div class="container clearfix">
+        <div class="left">左</div>
+        <div class="right">右</div>
+        <div class="content">内容</div>
+    </div>
+</body>
+
+</html>
