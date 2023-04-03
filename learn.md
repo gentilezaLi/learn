@@ -58,8 +58,4 @@
 
 - useState.js 实现 useState 函数
 
-<<<<<<< HEAD
-啊实打实了；ms
-=======
 了看不了你放假呢
->>>>>>> dev
