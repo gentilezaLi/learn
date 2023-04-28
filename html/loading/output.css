@@ -1,0 +1,2897 @@
+body, html {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-content: center;
+  background: #000;
+  overflow: hidden;
+}
+
+:root {
+  --headColor: hsl(130, 75%, 75%);
+  --endColor: hsl(60, 75%, 40%);
+}
+
+.g-container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  padding: 100px;
+  filter: blur(3px) contrast(3);
+  background: #000;
+  animation: hueRotate 8s infinite linear;
+}
+
+.g-circle {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: conic-gradient(var(--headColor) 0, var(--headColor) 2%, hsl(120, 75%, 70%), hsl(110, 75%, 65%), hsl(100, 75%, 60%), hsl(90, 75%, 55%), hsl(80, 75%, 50%), hsl(70, 75%, 45%), var(--endColor) 16%, var(--endColor) 18%, transparent 18%);
+  mask: radial-gradient(transparent, transparent 119px, #000 120px, #000);
+  -webkit-mask: radial-gradient(transparent, transparent 119px, #000 120px, #000);
+  animation: rotate 4s infinite -700ms linear;
+}
+.g-circle::before, .g-circle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 32px;
+  height: 32px;
+  background: var(--headColor);
+  top: 0;
+  left: 135px;
+  border-radius: 50%;
+}
+.g-circle::after {
+  background: var(--endColor);
+  left: unset;
+  top: 80px;
+  right: 10px;
+}
+
+.g-bubbles {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  border-radius: 50px;
+}
+
+.g-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--endColor);
+}
+
+.g-bubble:nth-child(1) {
+  --rotate: calc(1.8 * 1 * 1deg);
+  --delayTime: calc(4000 * 0.005 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -33px;
+  --y: -23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(2) {
+  --rotate: calc(1.8 * 2 * 1deg);
+  --delayTime: calc(4000 * 0.01 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 98px;
+  --y: -67px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(3) {
+  --rotate: calc(1.8 * 3 * 1deg);
+  --delayTime: calc(4000 * 0.015 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -17px;
+  --y: 23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(4) {
+  --rotate: calc(1.8 * 4 * 1deg);
+  --delayTime: calc(4000 * 0.02 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -34px;
+  --y: -29px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(5) {
+  --rotate: calc(1.8 * 5 * 1deg);
+  --delayTime: calc(4000 * 0.025 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 59px;
+  --y: -10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(6) {
+  --rotate: calc(1.8 * 6 * 1deg);
+  --delayTime: calc(4000 * 0.03 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 72px;
+  --y: -82px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(7) {
+  --rotate: calc(1.8 * 7 * 1deg);
+  --delayTime: calc(4000 * 0.035 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -87px;
+  --y: -54px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(8) {
+  --rotate: calc(1.8 * 8 * 1deg);
+  --delayTime: calc(4000 * 0.04 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -42px;
+  --y: -26px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(9) {
+  --rotate: calc(1.8 * 9 * 1deg);
+  --delayTime: calc(4000 * 0.045 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 7px;
+  --y: 52px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(10) {
+  --rotate: calc(1.8 * 10 * 1deg);
+  --delayTime: calc(4000 * 0.05 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 48px;
+  --y: -92px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(11) {
+  --rotate: calc(1.8 * 11 * 1deg);
+  --delayTime: calc(4000 * 0.055 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 31px;
+  --y: -90px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(12) {
+  --rotate: calc(1.8 * 12 * 1deg);
+  --delayTime: calc(4000 * 0.06 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 74px;
+  --y: -89px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(13) {
+  --rotate: calc(1.8 * 13 * 1deg);
+  --delayTime: calc(4000 * 0.065 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 74px;
+  --y: -38px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(14) {
+  --rotate: calc(1.8 * 14 * 1deg);
+  --delayTime: calc(4000 * 0.07 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 99px;
+  --y: 7px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(15) {
+  --rotate: calc(1.8 * 15 * 1deg);
+  --delayTime: calc(4000 * 0.075 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -78px;
+  --y: -43px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(16) {
+  --rotate: calc(1.8 * 16 * 1deg);
+  --delayTime: calc(4000 * 0.08 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 18px;
+  --y: -23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(17) {
+  --rotate: calc(1.8 * 17 * 1deg);
+  --delayTime: calc(4000 * 0.085 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 71px;
+  --y: 9px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(18) {
+  --rotate: calc(1.8 * 18 * 1deg);
+  --delayTime: calc(4000 * 0.09 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -30px;
+  --y: -88px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(19) {
+  --rotate: calc(1.8 * 19 * 1deg);
+  --delayTime: calc(4000 * 0.095 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 81px;
+  --y: -43px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(20) {
+  --rotate: calc(1.8 * 20 * 1deg);
+  --delayTime: calc(4000 * 0.1 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 81px;
+  --y: -92px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(21) {
+  --rotate: calc(1.8 * 21 * 1deg);
+  --delayTime: calc(4000 * 0.105 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 6px;
+  --y: -46px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(22) {
+  --rotate: calc(1.8 * 22 * 1deg);
+  --delayTime: calc(4000 * 0.11 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -47px;
+  --y: 12px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(23) {
+  --rotate: calc(1.8 * 23 * 1deg);
+  --delayTime: calc(4000 * 0.115 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -32px;
+  --y: 36px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(24) {
+  --rotate: calc(1.8 * 24 * 1deg);
+  --delayTime: calc(4000 * 0.12 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 18px;
+  --y: -13px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(25) {
+  --rotate: calc(1.8 * 25 * 1deg);
+  --delayTime: calc(4000 * 0.125 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 66px;
+  --y: -97px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(26) {
+  --rotate: calc(1.8 * 26 * 1deg);
+  --delayTime: calc(4000 * 0.13 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -46px;
+  --y: -2px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(27) {
+  --rotate: calc(1.8 * 27 * 1deg);
+  --delayTime: calc(4000 * 0.135 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 78px;
+  --y: 34px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(28) {
+  --rotate: calc(1.8 * 28 * 1deg);
+  --delayTime: calc(4000 * 0.14 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 5px;
+  --y: 94px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(29) {
+  --rotate: calc(1.8 * 29 * 1deg);
+  --delayTime: calc(4000 * 0.145 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 11px;
+  --y: -9px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(30) {
+  --rotate: calc(1.8 * 30 * 1deg);
+  --delayTime: calc(4000 * 0.15 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 51px;
+  --y: -97px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(31) {
+  --rotate: calc(1.8 * 31 * 1deg);
+  --delayTime: calc(4000 * 0.155 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -20px;
+  --y: 97px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(32) {
+  --rotate: calc(1.8 * 32 * 1deg);
+  --delayTime: calc(4000 * 0.16 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 20px;
+  --y: -65px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(33) {
+  --rotate: calc(1.8 * 33 * 1deg);
+  --delayTime: calc(4000 * 0.165 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 68px;
+  --y: -98px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(34) {
+  --rotate: calc(1.8 * 34 * 1deg);
+  --delayTime: calc(4000 * 0.17 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 40px;
+  --y: -90px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(35) {
+  --rotate: calc(1.8 * 35 * 1deg);
+  --delayTime: calc(4000 * 0.175 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -55px;
+  --y: 1px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(36) {
+  --rotate: calc(1.8 * 36 * 1deg);
+  --delayTime: calc(4000 * 0.18 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -5px;
+  --y: -47px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(37) {
+  --rotate: calc(1.8 * 37 * 1deg);
+  --delayTime: calc(4000 * 0.185 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 77px;
+  --y: 36px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(38) {
+  --rotate: calc(1.8 * 38 * 1deg);
+  --delayTime: calc(4000 * 0.19 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 18px;
+  --y: 100px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(39) {
+  --rotate: calc(1.8 * 39 * 1deg);
+  --delayTime: calc(4000 * 0.195 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 90px;
+  --y: -45px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(40) {
+  --rotate: calc(1.8 * 40 * 1deg);
+  --delayTime: calc(4000 * 0.2 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -38px;
+  --y: 91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(41) {
+  --rotate: calc(1.8 * 41 * 1deg);
+  --delayTime: calc(4000 * 0.205 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 73px;
+  --y: 68px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(42) {
+  --rotate: calc(1.8 * 42 * 1deg);
+  --delayTime: calc(4000 * 0.21 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -67px;
+  --y: 24px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(43) {
+  --rotate: calc(1.8 * 43 * 1deg);
+  --delayTime: calc(4000 * 0.215 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -46px;
+  --y: 64px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(44) {
+  --rotate: calc(1.8 * 44 * 1deg);
+  --delayTime: calc(4000 * 0.22 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -79px;
+  --y: 16px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(45) {
+  --rotate: calc(1.8 * 45 * 1deg);
+  --delayTime: calc(4000 * 0.225 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 4px;
+  --y: 83px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(46) {
+  --rotate: calc(1.8 * 46 * 1deg);
+  --delayTime: calc(4000 * 0.23 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 15px;
+  --y: -16px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(47) {
+  --rotate: calc(1.8 * 47 * 1deg);
+  --delayTime: calc(4000 * 0.235 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -18px;
+  --y: 18px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(48) {
+  --rotate: calc(1.8 * 48 * 1deg);
+  --delayTime: calc(4000 * 0.24 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -15px;
+  --y: 94px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(49) {
+  --rotate: calc(1.8 * 49 * 1deg);
+  --delayTime: calc(4000 * 0.245 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 20px;
+  --y: -89px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(50) {
+  --rotate: calc(1.8 * 50 * 1deg);
+  --delayTime: calc(4000 * 0.25 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -40px;
+  --y: -38px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(51) {
+  --rotate: calc(1.8 * 51 * 1deg);
+  --delayTime: calc(4000 * 0.255 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 42px;
+  --y: 67px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(52) {
+  --rotate: calc(1.8 * 52 * 1deg);
+  --delayTime: calc(4000 * 0.26 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 8px;
+  --y: -79px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(53) {
+  --rotate: calc(1.8 * 53 * 1deg);
+  --delayTime: calc(4000 * 0.265 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -7px;
+  --y: 91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(54) {
+  --rotate: calc(1.8 * 54 * 1deg);
+  --delayTime: calc(4000 * 0.27 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 6px;
+  --y: -92px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(55) {
+  --rotate: calc(1.8 * 55 * 1deg);
+  --delayTime: calc(4000 * 0.275 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -91px;
+  --y: -28px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(56) {
+  --rotate: calc(1.8 * 56 * 1deg);
+  --delayTime: calc(4000 * 0.28 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 85px;
+  --y: 71px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(57) {
+  --rotate: calc(1.8 * 57 * 1deg);
+  --delayTime: calc(4000 * 0.285 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 58px;
+  --y: -50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(58) {
+  --rotate: calc(1.8 * 58 * 1deg);
+  --delayTime: calc(4000 * 0.29 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 91px;
+  --y: 41px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(59) {
+  --rotate: calc(1.8 * 59 * 1deg);
+  --delayTime: calc(4000 * 0.295 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -85px;
+  --y: 51px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(60) {
+  --rotate: calc(1.8 * 60 * 1deg);
+  --delayTime: calc(4000 * 0.3 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 88px;
+  --y: -34px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(61) {
+  --rotate: calc(1.8 * 61 * 1deg);
+  --delayTime: calc(4000 * 0.305 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 87px;
+  --y: -50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(62) {
+  --rotate: calc(1.8 * 62 * 1deg);
+  --delayTime: calc(4000 * 0.31 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 1px;
+  --y: -72px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(63) {
+  --rotate: calc(1.8 * 63 * 1deg);
+  --delayTime: calc(4000 * 0.315 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 19px;
+  --y: -47px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(64) {
+  --rotate: calc(1.8 * 64 * 1deg);
+  --delayTime: calc(4000 * 0.32 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 59px;
+  --y: -41px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(65) {
+  --rotate: calc(1.8 * 65 * 1deg);
+  --delayTime: calc(4000 * 0.325 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 81px;
+  --y: -72px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(66) {
+  --rotate: calc(1.8 * 66 * 1deg);
+  --delayTime: calc(4000 * 0.33 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -8px;
+  --y: -97px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(67) {
+  --rotate: calc(1.8 * 67 * 1deg);
+  --delayTime: calc(4000 * 0.335 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -39px;
+  --y: 27px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(68) {
+  --rotate: calc(1.8 * 68 * 1deg);
+  --delayTime: calc(4000 * 0.34 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 37px;
+  --y: -30px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(69) {
+  --rotate: calc(1.8 * 69 * 1deg);
+  --delayTime: calc(4000 * 0.345 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -43px;
+  --y: -43px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(70) {
+  --rotate: calc(1.8 * 70 * 1deg);
+  --delayTime: calc(4000 * 0.35 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 59px;
+  --y: -14px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(71) {
+  --rotate: calc(1.8 * 71 * 1deg);
+  --delayTime: calc(4000 * 0.355 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 38px;
+  --y: 1px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(72) {
+  --rotate: calc(1.8 * 72 * 1deg);
+  --delayTime: calc(4000 * 0.36 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 43px;
+  --y: 82px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(73) {
+  --rotate: calc(1.8 * 73 * 1deg);
+  --delayTime: calc(4000 * 0.365 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -26px;
+  --y: 69px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(74) {
+  --rotate: calc(1.8 * 74 * 1deg);
+  --delayTime: calc(4000 * 0.37 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -5px;
+  --y: 59px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(75) {
+  --rotate: calc(1.8 * 75 * 1deg);
+  --delayTime: calc(4000 * 0.375 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -45px;
+  --y: 24px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(76) {
+  --rotate: calc(1.8 * 76 * 1deg);
+  --delayTime: calc(4000 * 0.38 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 25px;
+  --y: -28px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(77) {
+  --rotate: calc(1.8 * 77 * 1deg);
+  --delayTime: calc(4000 * 0.385 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 13px;
+  --y: 23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(78) {
+  --rotate: calc(1.8 * 78 * 1deg);
+  --delayTime: calc(4000 * 0.39 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 64px;
+  --y: 23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(79) {
+  --rotate: calc(1.8 * 79 * 1deg);
+  --delayTime: calc(4000 * 0.395 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -63px;
+  --y: 58px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(80) {
+  --rotate: calc(1.8 * 80 * 1deg);
+  --delayTime: calc(4000 * 0.4 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 76px;
+  --y: -77px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(81) {
+  --rotate: calc(1.8 * 81 * 1deg);
+  --delayTime: calc(4000 * 0.405 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 52px;
+  --y: -74px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(82) {
+  --rotate: calc(1.8 * 82 * 1deg);
+  --delayTime: calc(4000 * 0.41 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -67px;
+  --y: -2px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(83) {
+  --rotate: calc(1.8 * 83 * 1deg);
+  --delayTime: calc(4000 * 0.415 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -5px;
+  --y: 100px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(84) {
+  --rotate: calc(1.8 * 84 * 1deg);
+  --delayTime: calc(4000 * 0.42 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 43px;
+  --y: 73px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(85) {
+  --rotate: calc(1.8 * 85 * 1deg);
+  --delayTime: calc(4000 * 0.425 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 74px;
+  --y: 35px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(86) {
+  --rotate: calc(1.8 * 86 * 1deg);
+  --delayTime: calc(4000 * 0.43 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -18px;
+  --y: 67px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(87) {
+  --rotate: calc(1.8 * 87 * 1deg);
+  --delayTime: calc(4000 * 0.435 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 66px;
+  --y: -58px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(88) {
+  --rotate: calc(1.8 * 88 * 1deg);
+  --delayTime: calc(4000 * 0.44 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 88px;
+  --y: 62px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(89) {
+  --rotate: calc(1.8 * 89 * 1deg);
+  --delayTime: calc(4000 * 0.445 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -99px;
+  --y: 89px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(90) {
+  --rotate: calc(1.8 * 90 * 1deg);
+  --delayTime: calc(4000 * 0.45 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 0px;
+  --y: 36px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(91) {
+  --rotate: calc(1.8 * 91 * 1deg);
+  --delayTime: calc(4000 * 0.455 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 63px;
+  --y: -85px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(92) {
+  --rotate: calc(1.8 * 92 * 1deg);
+  --delayTime: calc(4000 * 0.46 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 75px;
+  --y: 71px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(93) {
+  --rotate: calc(1.8 * 93 * 1deg);
+  --delayTime: calc(4000 * 0.465 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 77px;
+  --y: 97px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(94) {
+  --rotate: calc(1.8 * 94 * 1deg);
+  --delayTime: calc(4000 * 0.47 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 68px;
+  --y: -16px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(95) {
+  --rotate: calc(1.8 * 95 * 1deg);
+  --delayTime: calc(4000 * 0.475 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -70px;
+  --y: -99px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(96) {
+  --rotate: calc(1.8 * 96 * 1deg);
+  --delayTime: calc(4000 * 0.48 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -47px;
+  --y: 15px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(97) {
+  --rotate: calc(1.8 * 97 * 1deg);
+  --delayTime: calc(4000 * 0.485 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -41px;
+  --y: -15px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(98) {
+  --rotate: calc(1.8 * 98 * 1deg);
+  --delayTime: calc(4000 * 0.49 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 21px;
+  --y: 10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(99) {
+  --rotate: calc(1.8 * 99 * 1deg);
+  --delayTime: calc(4000 * 0.495 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 86px;
+  --y: -77px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(100) {
+  --rotate: calc(1.8 * 100 * 1deg);
+  --delayTime: calc(4000 * 0.5 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 4px;
+  --y: 9px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(101) {
+  --rotate: calc(1.8 * 101 * 1deg);
+  --delayTime: calc(4000 * 0.505 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 62px;
+  --y: -66px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(102) {
+  --rotate: calc(1.8 * 102 * 1deg);
+  --delayTime: calc(4000 * 0.51 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -6px;
+  --y: -20px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(103) {
+  --rotate: calc(1.8 * 103 * 1deg);
+  --delayTime: calc(4000 * 0.515 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 50px;
+  --y: -25px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(104) {
+  --rotate: calc(1.8 * 104 * 1deg);
+  --delayTime: calc(4000 * 0.52 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -61px;
+  --y: 10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(105) {
+  --rotate: calc(1.8 * 105 * 1deg);
+  --delayTime: calc(4000 * 0.525 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 60px;
+  --y: 57px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(106) {
+  --rotate: calc(1.8 * 106 * 1deg);
+  --delayTime: calc(4000 * 0.53 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 47px;
+  --y: 84px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(107) {
+  --rotate: calc(1.8 * 107 * 1deg);
+  --delayTime: calc(4000 * 0.535 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: -4px;
+  --y: -33px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(108) {
+  --rotate: calc(1.8 * 108 * 1deg);
+  --delayTime: calc(4000 * 0.54 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 96px;
+  --y: 58px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(109) {
+  --rotate: calc(1.8 * 109 * 1deg);
+  --delayTime: calc(4000 * 0.545 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 24px;
+  --y: -83px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(110) {
+  --rotate: calc(1.8 * 110 * 1deg);
+  --delayTime: calc(4000 * 0.55 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -29px;
+  --y: -78px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(111) {
+  --rotate: calc(1.8 * 111 * 1deg);
+  --delayTime: calc(4000 * 0.555 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: -47px;
+  --y: 70px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(112) {
+  --rotate: calc(1.8 * 112 * 1deg);
+  --delayTime: calc(4000 * 0.56 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -16px;
+  --y: 51px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(113) {
+  --rotate: calc(1.8 * 113 * 1deg);
+  --delayTime: calc(4000 * 0.565 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -99px;
+  --y: -73px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(114) {
+  --rotate: calc(1.8 * 114 * 1deg);
+  --delayTime: calc(4000 * 0.57 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -50px;
+  --y: -41px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(115) {
+  --rotate: calc(1.8 * 115 * 1deg);
+  --delayTime: calc(4000 * 0.575 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 33px;
+  --y: -64px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(116) {
+  --rotate: calc(1.8 * 116 * 1deg);
+  --delayTime: calc(4000 * 0.58 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -83px;
+  --y: 26px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(117) {
+  --rotate: calc(1.8 * 117 * 1deg);
+  --delayTime: calc(4000 * 0.585 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 80px;
+  --y: 49px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(118) {
+  --rotate: calc(1.8 * 118 * 1deg);
+  --delayTime: calc(4000 * 0.59 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 68px;
+  --y: -91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(119) {
+  --rotate: calc(1.8 * 119 * 1deg);
+  --delayTime: calc(4000 * 0.595 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -86px;
+  --y: -12px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(120) {
+  --rotate: calc(1.8 * 120 * 1deg);
+  --delayTime: calc(4000 * 0.6 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -78px;
+  --y: -45px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(121) {
+  --rotate: calc(1.8 * 121 * 1deg);
+  --delayTime: calc(4000 * 0.605 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 50px;
+  --y: -36px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(122) {
+  --rotate: calc(1.8 * 122 * 1deg);
+  --delayTime: calc(4000 * 0.61 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 32px;
+  --y: -79px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(123) {
+  --rotate: calc(1.8 * 123 * 1deg);
+  --delayTime: calc(4000 * 0.615 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -27px;
+  --y: 51px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(124) {
+  --rotate: calc(1.8 * 124 * 1deg);
+  --delayTime: calc(4000 * 0.62 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 51px;
+  --y: -17px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(125) {
+  --rotate: calc(1.8 * 125 * 1deg);
+  --delayTime: calc(4000 * 0.625 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -91px;
+  --y: -56px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(126) {
+  --rotate: calc(1.8 * 126 * 1deg);
+  --delayTime: calc(4000 * 0.63 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 7px;
+  --y: 1px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(127) {
+  --rotate: calc(1.8 * 127 * 1deg);
+  --delayTime: calc(4000 * 0.635 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -55px;
+  --y: -50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(128) {
+  --rotate: calc(1.8 * 128 * 1deg);
+  --delayTime: calc(4000 * 0.64 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -76px;
+  --y: -23px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(129) {
+  --rotate: calc(1.8 * 129 * 1deg);
+  --delayTime: calc(4000 * 0.645 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 4px;
+  --y: 15px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(130) {
+  --rotate: calc(1.8 * 130 * 1deg);
+  --delayTime: calc(4000 * 0.65 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 56px;
+  --y: -32px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(131) {
+  --rotate: calc(1.8 * 131 * 1deg);
+  --delayTime: calc(4000 * 0.655 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -75px;
+  --y: -56px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(132) {
+  --rotate: calc(1.8 * 132 * 1deg);
+  --delayTime: calc(4000 * 0.66 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 42px;
+  --y: -91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(133) {
+  --rotate: calc(1.8 * 133 * 1deg);
+  --delayTime: calc(4000 * 0.665 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: -19px;
+  --y: -88px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(134) {
+  --rotate: calc(1.8 * 134 * 1deg);
+  --delayTime: calc(4000 * 0.67 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -22px;
+  --y: -88px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(135) {
+  --rotate: calc(1.8 * 135 * 1deg);
+  --delayTime: calc(4000 * 0.675 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -85px;
+  --y: -78px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(136) {
+  --rotate: calc(1.8 * 136 * 1deg);
+  --delayTime: calc(4000 * 0.68 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 59px;
+  --y: -34px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(137) {
+  --rotate: calc(1.8 * 137 * 1deg);
+  --delayTime: calc(4000 * 0.685 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -95px;
+  --y: 72px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(138) {
+  --rotate: calc(1.8 * 138 * 1deg);
+  --delayTime: calc(4000 * 0.69 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -53px;
+  --y: -41px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(139) {
+  --rotate: calc(1.8 * 139 * 1deg);
+  --delayTime: calc(4000 * 0.695 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -22px;
+  --y: -73px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(140) {
+  --rotate: calc(1.8 * 140 * 1deg);
+  --delayTime: calc(4000 * 0.7 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -82px;
+  --y: -75px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(141) {
+  --rotate: calc(1.8 * 141 * 1deg);
+  --delayTime: calc(4000 * 0.705 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -78px;
+  --y: 67px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(142) {
+  --rotate: calc(1.8 * 142 * 1deg);
+  --delayTime: calc(4000 * 0.71 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 55px;
+  --y: 37px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(143) {
+  --rotate: calc(1.8 * 143 * 1deg);
+  --delayTime: calc(4000 * 0.715 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 86px;
+  --y: -50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(144) {
+  --rotate: calc(1.8 * 144 * 1deg);
+  --delayTime: calc(4000 * 0.72 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -1px;
+  --y: 35px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(145) {
+  --rotate: calc(1.8 * 145 * 1deg);
+  --delayTime: calc(4000 * 0.725 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 86px;
+  --y: -33px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(146) {
+  --rotate: calc(1.8 * 146 * 1deg);
+  --delayTime: calc(4000 * 0.73 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -55px;
+  --y: 45px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(147) {
+  --rotate: calc(1.8 * 147 * 1deg);
+  --delayTime: calc(4000 * 0.735 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 76px;
+  --y: -17px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(148) {
+  --rotate: calc(1.8 * 148 * 1deg);
+  --delayTime: calc(4000 * 0.74 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: 55px;
+  --y: 30px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(149) {
+  --rotate: calc(1.8 * 149 * 1deg);
+  --delayTime: calc(4000 * 0.745 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -59px;
+  --y: 53px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(150) {
+  --rotate: calc(1.8 * 150 * 1deg);
+  --delayTime: calc(4000 * 0.75 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 34px;
+  --y: 94px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(151) {
+  --rotate: calc(1.8 * 151 * 1deg);
+  --delayTime: calc(4000 * 0.755 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -78px;
+  --y: -10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(152) {
+  --rotate: calc(1.8 * 152 * 1deg);
+  --delayTime: calc(4000 * 0.76 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 53px;
+  --y: 87px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(153) {
+  --rotate: calc(1.8 * 153 * 1deg);
+  --delayTime: calc(4000 * 0.765 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: 5px;
+  --y: 10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(154) {
+  --rotate: calc(1.8 * 154 * 1deg);
+  --delayTime: calc(4000 * 0.77 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 7px;
+  --y: 47px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(155) {
+  --rotate: calc(1.8 * 155 * 1deg);
+  --delayTime: calc(4000 * 0.775 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -57px;
+  --y: 51px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(156) {
+  --rotate: calc(1.8 * 156 * 1deg);
+  --delayTime: calc(4000 * 0.78 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 75px;
+  --y: -5px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(157) {
+  --rotate: calc(1.8 * 157 * 1deg);
+  --delayTime: calc(4000 * 0.785 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -59px;
+  --y: 62px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(158) {
+  --rotate: calc(1.8 * 158 * 1deg);
+  --delayTime: calc(4000 * 0.79 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 2px;
+  --y: 71px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(159) {
+  --rotate: calc(1.8 * 159 * 1deg);
+  --delayTime: calc(4000 * 0.795 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -49px;
+  --y: -33px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(160) {
+  --rotate: calc(1.8 * 160 * 1deg);
+  --delayTime: calc(4000 * 0.8 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -32px;
+  --y: 21px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(161) {
+  --rotate: calc(1.8 * 161 * 1deg);
+  --delayTime: calc(4000 * 0.805 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 42px;
+  --y: 19px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(162) {
+  --rotate: calc(1.8 * 162 * 1deg);
+  --delayTime: calc(4000 * 0.81 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -30px;
+  --y: 17px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(163) {
+  --rotate: calc(1.8 * 163 * 1deg);
+  --delayTime: calc(4000 * 0.815 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: -98px;
+  --y: 50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(164) {
+  --rotate: calc(1.8 * 164 * 1deg);
+  --delayTime: calc(4000 * 0.82 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -25px;
+  --y: 16px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(165) {
+  --rotate: calc(1.8 * 165 * 1deg);
+  --delayTime: calc(4000 * 0.825 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -35px;
+  --y: 76px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(166) {
+  --rotate: calc(1.8 * 166 * 1deg);
+  --delayTime: calc(4000 * 0.83 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 50px;
+  --y: -59px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(167) {
+  --rotate: calc(1.8 * 167 * 1deg);
+  --delayTime: calc(4000 * 0.835 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: -60px;
+  --y: -62px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(168) {
+  --rotate: calc(1.8 * 168 * 1deg);
+  --delayTime: calc(4000 * 0.84 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -12px;
+  --y: 91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(169) {
+  --rotate: calc(1.8 * 169 * 1deg);
+  --delayTime: calc(4000 * 0.845 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -78px;
+  --y: -10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(170) {
+  --rotate: calc(1.8 * 170 * 1deg);
+  --delayTime: calc(4000 * 0.85 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -82px;
+  --y: -10px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(171) {
+  --rotate: calc(1.8 * 171 * 1deg);
+  --delayTime: calc(4000 * 0.855 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: -84px;
+  --y: 14px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(172) {
+  --rotate: calc(1.8 * 172 * 1deg);
+  --delayTime: calc(4000 * 0.86 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -59px;
+  --y: -47px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(173) {
+  --rotate: calc(1.8 * 173 * 1deg);
+  --delayTime: calc(4000 * 0.865 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -54px;
+  --y: 81px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(174) {
+  --rotate: calc(1.8 * 174 * 1deg);
+  --delayTime: calc(4000 * 0.87 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 12px;
+  --y: 50px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(175) {
+  --rotate: calc(1.8 * 175 * 1deg);
+  --delayTime: calc(4000 * 0.875 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 9px;
+  --y: -29px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(176) {
+  --rotate: calc(1.8 * 176 * 1deg);
+  --delayTime: calc(4000 * 0.88 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: 3px;
+  --y: 81px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(177) {
+  --rotate: calc(1.8 * 177 * 1deg);
+  --delayTime: calc(4000 * 0.885 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -43px;
+  --y: 95px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(178) {
+  --rotate: calc(1.8 * 178 * 1deg);
+  --delayTime: calc(4000 * 0.89 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: -13px;
+  --y: -45px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(179) {
+  --rotate: calc(1.8 * 179 * 1deg);
+  --delayTime: calc(4000 * 0.895 * -1ms);
+  --width: 30px;
+  --scale: 0.5;
+  --x: 13px;
+  --y: 65px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(180) {
+  --rotate: calc(1.8 * 180 * 1deg);
+  --delayTime: calc(4000 * 0.9 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 15px;
+  --y: -98px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(181) {
+  --rotate: calc(1.8 * 181 * 1deg);
+  --delayTime: calc(4000 * 0.905 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -33px;
+  --y: -22px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(182) {
+  --rotate: calc(1.8 * 182 * 1deg);
+  --delayTime: calc(4000 * 0.91 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 85px;
+  --y: 13px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(183) {
+  --rotate: calc(1.8 * 183 * 1deg);
+  --delayTime: calc(4000 * 0.915 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 49px;
+  --y: -99px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(184) {
+  --rotate: calc(1.8 * 184 * 1deg);
+  --delayTime: calc(4000 * 0.92 * -1ms);
+  --width: 30px;
+  --scale: 1.1;
+  --x: -38px;
+  --y: -71px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(185) {
+  --rotate: calc(1.8 * 185 * 1deg);
+  --delayTime: calc(4000 * 0.925 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 59px;
+  --y: -90px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(186) {
+  --rotate: calc(1.8 * 186 * 1deg);
+  --delayTime: calc(4000 * 0.93 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: 2px;
+  --y: 15px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(187) {
+  --rotate: calc(1.8 * 187 * 1deg);
+  --delayTime: calc(4000 * 0.935 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 48px;
+  --y: -91px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(188) {
+  --rotate: calc(1.8 * 188 * 1deg);
+  --delayTime: calc(4000 * 0.94 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: -32px;
+  --y: 13px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(189) {
+  --rotate: calc(1.8 * 189 * 1deg);
+  --delayTime: calc(4000 * 0.945 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -98px;
+  --y: -82px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(190) {
+  --rotate: calc(1.8 * 190 * 1deg);
+  --delayTime: calc(4000 * 0.95 * -1ms);
+  --width: 30px;
+  --scale: 0.9;
+  --x: 99px;
+  --y: -61px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(191) {
+  --rotate: calc(1.8 * 191 * 1deg);
+  --delayTime: calc(4000 * 0.955 * -1ms);
+  --width: 30px;
+  --scale: 1;
+  --x: 53px;
+  --y: -1px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(192) {
+  --rotate: calc(1.8 * 192 * 1deg);
+  --delayTime: calc(4000 * 0.96 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -57px;
+  --y: 62px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(193) {
+  --rotate: calc(1.8 * 193 * 1deg);
+  --delayTime: calc(4000 * 0.965 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: -98px;
+  --y: -16px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(194) {
+  --rotate: calc(1.8 * 194 * 1deg);
+  --delayTime: calc(4000 * 0.97 * -1ms);
+  --width: 30px;
+  --scale: 1.3;
+  --x: -42px;
+  --y: 88px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(195) {
+  --rotate: calc(1.8 * 195 * 1deg);
+  --delayTime: calc(4000 * 0.975 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -99px;
+  --y: -86px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(196) {
+  --rotate: calc(1.8 * 196 * 1deg);
+  --delayTime: calc(4000 * 0.98 * -1ms);
+  --width: 30px;
+  --scale: 1.4;
+  --x: -90px;
+  --y: 51px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(197) {
+  --rotate: calc(1.8 * 197 * 1deg);
+  --delayTime: calc(4000 * 0.985 * -1ms);
+  --width: 30px;
+  --scale: 1.2;
+  --x: 93px;
+  --y: -9px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(198) {
+  --rotate: calc(1.8 * 198 * 1deg);
+  --delayTime: calc(4000 * 0.99 * -1ms);
+  --width: 30px;
+  --scale: 0.8;
+  --x: -52px;
+  --y: -64px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(199) {
+  --rotate: calc(1.8 * 199 * 1deg);
+  --delayTime: calc(4000 * 0.995 * -1ms);
+  --width: 30px;
+  --scale: 0.6;
+  --x: 0px;
+  --y: -32px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+.g-bubble:nth-child(200) {
+  --rotate: calc(1.8 * 200 * 1deg);
+  --delayTime: calc(4000 * 1 * -1ms);
+  --width: 30px;
+  --scale: 0.7;
+  --x: 31px;
+  --y: 79px;
+  width: var(--width);
+  height: var(--width);
+  transform: rotateZ(var(--rotate)) translate(135px, 0);
+  opacity: 1;
+  animation: showAndHide 4000ms linear var(--delayTime) infinite;
+}
+
+@keyframes showAndHide {
+  0% {
+    transform: rotateZ(var(--rotate)) translate(135px, 0);
+    opacity: 0;
+  }
+  75% {
+    opacity: 0;
+  }
+  75.1% {
+    transform: rotateZ(var(--rotate)) translate(135px, 0) scale(var(--scale));
+    opacity: 1;
+  }
+  100% {
+    transform: rotateZ(var(--rotate)) translate(calc(135px + var(--x)), var(--y)) scale(0.2);
+    opacity: 0;
+  }
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes hueRotate {
+  100% {
+    filter: blur(3px) contrast(3) hue-rotate(360deg);
+  }
+}
+
+/*# sourceMappingURL=output.css.map */
