@@ -39,7 +39,7 @@ export interface confirmObjType {
 }
 
 interface regionType {
-  defaultValue?: string[];
+  defaultValue?: (string | number)[];
   data?: string[];
   visible: boolean;
   type?: boolean;
@@ -53,7 +53,7 @@ const RegionPicker = memo(
     const [countData, setCountData] = useState<CountType[]>([]); //获取区县数据
     const [catchData, setCatchData] = useState<any>({}); //缓存数据
 
-    const [cacheVal, setCacheVal] = useState(defaultValue);
+    const [cacheVal, setCacheVal] = useState(defaultValue as any);
 
     //根据城市获取区县
     const getdata = async (id: string) => {
@@ -102,15 +102,25 @@ const RegionPicker = memo(
 
       if (!visible) {
         if (defaultValue?.length === 3) {
-          getdata(defaultValue[1]);
+          getdata(String(defaultValue[1]));
         }
-        setCacheVal(defaultValue);
+        if (defaultValue) {
+          setCacheVal([
+            String(defaultValue[0]),
+            String(defaultValue[1]),
+            String(defaultValue[2]),
+          ]);
+        }
       }
     }, []);
 
     useEffect(() => {
       if (defaultValue) {
-        setCacheVal(defaultValue);
+        setCacheVal([
+          String(defaultValue[0]),
+          String(defaultValue[1]),
+          String(defaultValue[2]),
+        ]);
       }
     }, [defaultValue]);
 
@@ -121,7 +131,11 @@ const RegionPicker = memo(
       } else {
         //走默认数据 默认北京
         let val = !_.isNil(defaultValue)
-          ? defaultValue
+          ? [
+              String(defaultValue[0]),
+              String(defaultValue[1]),
+              String(defaultValue[2]),
+            ]
           : ["110000", "110100", "110101"];
 
         for (let i = 0; i < foramtpList.length; i++) {
@@ -186,7 +200,13 @@ const RegionPicker = memo(
                             _.assign(catchData, { [v[1]]: foramtpList })
                           );
                         });
-                        setCacheVal(defaultValue);
+                        if (defaultValue) {
+                          setCacheVal([
+                            String(defaultValue[0]),
+                            String(defaultValue[1]),
+                            String(defaultValue[2]),
+                          ]);
+                        }
                       } else if (qid !== _.get(cacheVal, "[2]")) {
                         setCacheVal(v);
                       }
@@ -220,7 +240,7 @@ const RegionPicker = memo(
       <div className="ah-regionpicker">
         <CascadePicker
           popupClassName="ah-regionpickerstyle"
-          title={type?'省市区/县':'省市'}
+          title={type ? "省市区/县" : "省市"}
           value={cacheVal}
           options={options}
           visible={visible}
