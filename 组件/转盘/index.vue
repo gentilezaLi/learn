@@ -59,8 +59,6 @@
   import Vue from "vue";
   import { Toast, Popup } from "vant";
   Vue.use(Toast).use(Popup);
-  import { API } from "../../../api/818";
-  import { getUrlParams, getAPPID2 } from "../../../util/util";
   
   export default {
     name: "MyRaffle",
@@ -106,23 +104,6 @@
           return;
         }
         this.rotating();
-  
-        // API.POST_LOTTERY({
-        //   _appid: getAPPID2(),
-        //   acid: this.acid,
-        //   infoid: this.infoid,
-        // })
-        //   .then((res) => {
-        //     if (res && res.returncode == 0 && res.result) {
-        //       this.lotteryInfo = res.result;
-        //       this.rotating();
-        //     } else if (res.message) {
-        //       Toast(res.message);
-        //     }
-        //   })
-        //   .catch(() => {
-        //     Toast("网络异常, 请重试");
-        //   });
       },
   
       rotating() {
@@ -141,11 +122,6 @@
         var that = this;
         setTimeout(() => {
           this.showPop = true;
-  
-          this.$eventBus.$emit("tracktrackCustom", {
-            key: "usc_2sc_hdy_2023n818hdym_dkymcjzpzjdcpg_show",
-            type: 1, //1 show 2 click
-          });
   
           that.isAllowClick = true;
           that.rotate_deg = "rotate(" + 0 + "deg)"; //定时器关闭的时候重置角度
