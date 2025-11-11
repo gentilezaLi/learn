@@ -1,8 +1,45 @@
-const Obj = {
-  fn1: () => console.log(this),
-  fn2: function () { console.log(this) }
+function deepCloneWithSpread(obj) {
+  if (Array.isArray(obj)) return obj.map((item) => deepCloneWithSpread(item));
+  if (typeof obj === "object" && obj !== null) {
+    return Object.entries(obj).reduce((clone, [key, value]) => {
+      console.log(key, value, clone);
+      clone[key] = deepCloneWithSpread(value);
+      return clone;
+    }, {});
+  }
+  return obj;
 }
 
-Obj.fn1();
-Obj.fn2();
+// const obj = {
+//   a: 1,
+//   b: 2,
+//   c: () => {
+//     return 3;
+//   },
+// };
 
+// const clonedObj = deepCloneWithSpread(obj);
+// console.log(clonedObj, "---");
+
+function cloneDeep(obj) {
+  if (Array.isArray(obj)) return obj.map((x) => cloneDeep(x));
+  if (typeof obj === "object" && obj !== null) {
+    return Object.entries(obj).reduce((clone, [key, value]) => {
+      console.log(clone);
+      clone[key] = cloneDeep(value);
+      return clone;
+    }, {});
+  }
+  return obj;
+}
+
+const obj = {
+  a: 1,
+  b: 2,
+  c: () => {
+    return 3;
+  },
+};
+
+const clonedObj = cloneDeep(obj);
+console.log(clonedObj, "---");
