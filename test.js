@@ -54,3 +54,6 @@ console.log(a.next());
 console.log(a.next());
 console.log(a.next());
 console.log(a.next());
+console.log(a.next());
+console.log(a.next());
+console.log(a.next());
