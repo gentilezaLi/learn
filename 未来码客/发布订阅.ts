@@ -1,10 +1,8 @@
 class EventBus {
-  constructor() {
-    this.subscribers = {};
-  }
+  private subscribers: Record<string, Array<(data?: any) => void>> = {};
 
   // 订阅事件
-  subscribe(event, callback) {
+  subscribe(event: string, callback: (data?: any) => void): () => void {
     if (!this.subscribers[event]) {
       this.subscribers[event] = [];
     }
@@ -17,7 +15,7 @@ class EventBus {
   }
 
   // 发布事件
-  publish(event, data) {
+  publish(event: string, data?: any): void {
     if (!this.subscribers[event]) return;
     this.subscribers[event].forEach((callback) => {
       try {
@@ -29,7 +27,7 @@ class EventBus {
   }
 
   // 取消订阅
-  unsubscribe(event, callback) {
+  unsubscribe(event: string, callback: (data?: any) => void): void {
     if (!this.subscribers[event]) return;
     const index = this.subscribers[event].indexOf(callback);
     if (index !== -1) {
@@ -38,8 +36,8 @@ class EventBus {
   }
 
   // 一次性订阅
-  once(event, callback) {
-    const onceHandler = (data) => {
+  once(event: string, callback: (data?: any) => void): void {
+    const onceHandler = (data?: any) => {
       callback(data);
       this.unsubscribe(event, onceHandler);
     };
@@ -65,3 +63,4 @@ unsub();
 bus.once("app.initialized", () => {
   console.log("应用已初始化");
 });
+
