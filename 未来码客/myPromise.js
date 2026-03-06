@@ -107,4 +107,13 @@ class MyPromise {
       });
     });
   }
+  static allSettled(promiseQueue) {
+    return new MyPromise((resolve, reject) => {
+      const result = [];
+      promiseQueue.forEach((promise) => {
+        promise().then(resolve).catch(reject);
+      });
+      resolve(result);
+    });
+  }
 }
