@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五子棋</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .game-container {
+            text-align: center;
+        }
+        h1 {
+            color: #f39c12;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+        }
+        .board-container {
+            position: relative;
+            display: inline-block;
+        }
+        #gameCanvas {
+            border: 3px solid #8b7355;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        .info {
+            margin-top: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+        }
+        .current-player {
+            color: #ecf0f1;
+        }
+        .current-player span {
+            font-weight: bold;
+        }
+        .current-player .black {
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 2px 10px;
+            border-radius: 15px;
+        }
+        .current-player .white {
+            color: #2c3e50;
+            background: #fff;
+            padding: 2px 10px;
+            border-radius: 15px;
+        }
+        #restartBtn {
+            margin-top: 15px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            background: #f39c12;
+            color: #1a252f;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        #restartBtn:hover {
+            background: #e67e22;
+            transform: scale(1.05);
+        }
+        .winner {
+            color: #f39c12;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>⚫ 五子棋 ⚪</h1>
+        <div class="board-container">
+            <canvas id="gameCanvas" width="570" height="570"></canvas>
+        </div>
+        <div class="info">
+            <div class="current-player">
+                当前: <span id="currentPlayer" class="black">黑棋</span>
+            </div>
+        </div>
+        <div id="winnerText" class="winner" style="display: none;"></div>
+        <button id="restartBtn">重新开始</button>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const currentPlayerElement = document.getElementById('currentPlayer');
+        const winnerText = document.getElementById('winnerText');
+        const restartBtn = document.getElementById('restartBtn');
+
+        const boardSize = 15;
+        const cellSize = 38;
+        const padding = 19;
+        const canvasSize = (boardSize - 1) * cellSize + padding * 2;
+
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+
+        let board = [];
+        let currentPlayer = 1; // 1 = black, 2 = white
+        let gameOver = false;
+        let lastMove = null;
+
+        function initGame() {
+            board = Array(boardSize).fill(null).map(() => Array(boardSize).fill(0));
+            currentPlayer = 1;
+            gameOver = false;
+            lastMove = null;
+            winnerText.style.display = 'none';
+            updatePlayerDisplay();
+            drawBoard();
+        }
+
+        function updatePlayerDisplay() {
+            if (currentPlayer === 1) {
+                currentPlayerElement.textContent = '黑棋';
+                currentPlayerElement.className = 'black';
+            } else {
+                currentPlayerElement.textContent = '白棋';
+                currentPlayerElement.className = 'white';
+            }
+        }
+
+        function drawBoard() {
+            // Draw wood background
+            const gradient = ctx.createLinearGradient(0, 0, canvasSize, canvasSize);
+            gradient.addColorStop(0, '#deb887');
+            gradient.addColorStop(0.5, '#d2a679');
+            gradient.addColorStop(1, '#c49565');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvasSize, canvasSize);
+
+            // Draw grid lines
+            ctx.strokeStyle = '#5c4a3d';
+            ctx.lineWidth = 1;
+
+            for (let i = 0; i < boardSize; i++) {
+                // Vertical lines
+                ctx.beginPath();
+                ctx.moveTo(padding + i * cellSize, padding);
+                ctx.lineTo(padding + i * cellSize, padding + (boardSize - 1) * cellSize);
+                ctx.stroke();
+
+                // Horizontal lines
+                ctx.beginPath();
+                ctx.moveTo(padding, padding + i * cellSize);
+                ctx.lineTo(padding + (boardSize - 1) * cellSize, padding + i * cellSize);
+                ctx.stroke();
+            }
+
+            // Draw star points (天元和星位)
+            const starPoints = [
+                [3, 3], [3, 7], [3, 11],
+                [7, 3], [7, 7], [7, 11],
+                [11, 3], [11, 7], [11, 11]
+            ];
+
+            ctx.fillStyle = '#5c4a3d';
+            starPoints.forEach(([x, y]) => {
+                ctx.beginPath();
+                ctx.arc(padding + x * cellSize, padding + y * cellSize, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // Draw pieces
+            for (let y = 0; y < boardSize; y++) {
+                for (let x = 0; x < boardSize; x++) {
+                    if (board[y][x] !== 0) {
+                        drawPiece(x, y, board[y][x]);
+                    }
+                }
+            }
+
+            // Highlight last move
+            if (lastMove) {
+                ctx.strokeStyle = '#ff6b6b';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(
+                    padding + lastMove.x * cellSize,
+                    padding + lastMove.y * cellSize,
+                    cellSize / 2 - 2,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.stroke();
+            }
+        }
+
+        function drawPiece(x, y, player) {
+            const px = padding + x * cellSize;
+            const py = padding + y * cellSize;
+            const radius = cellSize / 2 - 2;
+
+            ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+            ctx.shadowBlur = 5;
+            ctx.shadowOffsetX = 2;
+            ctx.shadowOffsetY = 2;
+
+            if (player === 1) {
+                // Black piece
+                const gradient = ctx.createRadialGradient(px - 5, py - 5, 0, px, py, radius);
+                gradient.addColorStop(0, '#555');
+                gradient.addColorStop(1, '#111');
+                ctx.fillStyle = gradient;
+            } else {
+                // White piece
+                const gradient = ctx.createRadialGradient(px - 5, py - 5, 0, px, py, radius);
+                gradient.addColorStop(0, '#fff');
+                gradient.addColorStop(1, '#ccc');
+                ctx.fillStyle = gradient;
+            }
+
+            ctx.beginPath();
+            ctx.arc(px, py, radius, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+        }
+
+        function getClickPosition(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.round((e.clientX - rect.left - padding) / cellSize);
+            const y = Math.round((e.clientY - rect.top - padding) / cellSize);
+            return { x, y };
+        }
+
+        function isValidMove(x, y) {
+            return x >= 0 && x < boardSize && y >= 0 && y < boardSize && board[y][x] === 0;
+        }
+
+        function checkWin(x, y, player) {
+            const directions = [
+                [1, 0],  // horizontal
+                [0, 1],  // vertical
+                [1, 1],  // diagonal
+                [1, -1]  // anti-diagonal
+            ];
+
+            for (const [dx, dy] of directions) {
+                let count = 1;
+
+                // Check positive direction
+                for (let i = 1; i < 5; i++) {
+                    const nx = x + dx * i;
+                    const ny = y + dy * i;
+                    if (nx >= 0 && nx < boardSize && ny >= 0 && ny < boardSize && board[ny][nx] === player) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+
+                // Check negative direction
+                for (let i = 1; i < 5; i++) {
+                    const nx = x - dx * i;
+                    const ny = y - dy * i;
+                    if (nx >= 0 && nx < boardSize && ny >= 0 && ny < boardSize && board[ny][nx] === player) {
+                        count++;
+                    } else {
+                        break;
+                    }
+                }
+
+                if (count >= 5) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        function checkDraw() {
+            for (let y = 0; y < boardSize; y++) {
+                for (let x = 0; x < boardSize; x++) {
+                    if (board[y][x] === 0) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (gameOver) return;
+
+            const { x, y } = getClickPosition(e);
+
+            if (!isValidMove(x, y)) return;
+
+            board[y][x] = currentPlayer;
+            lastMove = { x, y };
+
+            if (checkWin(x, y, currentPlayer)) {
+                gameOver = true;
+                winnerText.textContent = currentPlayer === 1 ? '🎉 黑棋获胜!' : '🎉 白棋获胜!';
+                winnerText.style.display = 'block';
+            } else if (checkDraw()) {
+                gameOver = true;
+                winnerText.textContent = '🤝 平局!';
+                winnerText.style.display = 'block';
+            } else {
+                currentPlayer = currentPlayer === 1 ? 2 : 1;
+                updatePlayerDisplay();
+            }
+
+            drawBoard();
+        });
+
+        // Hover effect
+        canvas.addEventListener('mousemove', (e) => {
+            if (gameOver) return;
+
+            const { x, y } = getClickPosition(e);
+            drawBoard();
+
+            if (isValidMove(x, y)) {
+                const px = padding + x * cellSize;
+                const py = padding + y * cellSize;
+                ctx.globalAlpha = 0.4;
+                drawPiece(x, y, currentPlayer);
+                ctx.globalAlpha = 1;
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            drawBoard();
+        });
+
+        restartBtn.addEventListener('click', initGame);
+
+        initGame();
+    </script>
+</body>
+</html>
