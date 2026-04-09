@@ -1,0 +1,22 @@
+{
+  "name": "my-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CloudBase full-stack monorepo with React + TypeScript",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "bootstrap": "npm install",
+    "dev": "npm run dev --workspace web",
+    "build": "npm run build --workspace web && npm run build --workspace api-function",
+    "lint": "npm run lint --workspace web",
+    "deploy:function": "npm run deploy --workspace api-function",
+    "deploy:web": "npm run deploy --workspace web"
+  },
+  "devDependencies": {
+    "lerna": "^9.0.7",
+    "typescript": "^6.0.2"
+  }
+}

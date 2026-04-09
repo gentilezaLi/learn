@@ -1,0 +1,109 @@
+.page {
+  min-height: 100vh;
+  padding: 3rem 1.5rem;
+  display: grid;
+  grid-template-columns: minmax(260px, 440px) minmax(320px, 680px);
+  gap: 2rem;
+  align-items: start;
+}
+
+.hero {
+  transform: rotate(-2deg);
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid #d88f3f;
+  background: #fff4de;
+  color: #8c4a00;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  margin: 1rem 0 0.5rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+}
+
+.hint {
+  color: #6a5b4b;
+  max-width: 30ch;
+}
+
+.panel {
+  border: 1px solid #dcc2a4;
+  background: #fff9f0;
+  padding: 1.25rem;
+  box-shadow: 8px 8px 0 #efdeca;
+}
+
+.composer {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.8rem;
+}
+
+.composer input {
+  border: 1px solid #caa882;
+  padding: 0.7rem;
+  font: inherit;
+  background: #fff;
+}
+
+.composer button {
+  border: 1px solid #8f5a2a;
+  background: #d98d3d;
+  color: #fff;
+  padding: 0.7rem 1rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.composer button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.state {
+  margin-top: 1rem;
+  color: #6d5b46;
+}
+
+.error {
+  margin-top: 1rem;
+  color: #8b1f1f;
+}
+
+.list {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.list li {
+  display: flex;
+  justify-content: space-between;
+  border: 1px dashed #caa882;
+  background: #fff;
+  padding: 0.65rem 0.75rem;
+}
+
+.list li.done span {
+  text-decoration: line-through;
+  color: #7f7f7f;
+}
+
+@media (max-width: 920px) {
+  .page {
+    grid-template-columns: 1fr;
+    padding: 2rem 1rem;
+  }
+
+  .hero {
+    transform: rotate(0);
+  }
+}
