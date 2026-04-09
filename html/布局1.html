@@ -11,6 +11,7 @@
             margin: 0;
         }
 
+
         .container {
             height: 400px;
             background-color: #eebefa;
@@ -20,20 +21,23 @@
             height: 400px;
             width: 200px;
             background-color: #f783ac;
-            float: left; /* 1. 左列容器开启左浮动 */
+            float: left;
+            /* 1. 左列容器开启左浮动 */
         }
 
         .content {
             height: 400px;
             background-color: #d9480f;
-            overflow: hidden;  /* 自适应元素设置 overflow 会创建一个BFC 完成自适应 */
+            overflow: hidden;
+            /* 自适应元素设置 overflow 会创建一个BFC 完成自适应 */
         }
 
         .right {
             height: 400px;
             width: 200px;
             background-color: #c0eb75;
-            float: right; /* 2. 右列容器开启右浮动 */
+            float: right;
+            /* 2. 右列容器开启右浮动 */
         }
 
         .left,
@@ -54,7 +58,7 @@
         }
     </style>
 
-<!-- 
+    <!-- 
     通过 float 实现方案一
     
     1.左列容器开启左浮动
