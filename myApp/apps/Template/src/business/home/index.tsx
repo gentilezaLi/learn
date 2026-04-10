@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { List, Button, Space, Image } from 'antd-mobile';
 import { fetchItems } from './index';
 import type { Item } from './index';
+import './index.less';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
@@ -26,18 +27,17 @@ const HomePage: React.FC = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div style={{ padding: '20px', textAlign: 'center' }}>Loading...</div>
-    );
+    return <div className="loading-container">Loading...</div>;
   }
 
   return (
-    <div style={{ padding: '16px' }}>
+    <div className="home-container">
       <Space direction="vertical" style={{ width: '100%' }}>
         <h1>Items List</h1>
         <List>
           {items.map((item) => (
             <List.Item
+              className="list-item"
               key={item.id}
               prefix={
                 <Image
@@ -45,8 +45,10 @@ const HomePage: React.FC = () => {
                   style={{ width: '60px', height: '60px', objectFit: 'cover' }}
                 />
               }
-              title={item.title}
-              description={item.description}
+              title={<div className="list-item-title">{item.title}</div>}
+              description={
+                <div className="list-item-description">{item.description}</div>
+              }
               onClick={() => navigate(`/detail/${item.id}`)}
               extra={<Button size="small">View Detail</Button>}
             />

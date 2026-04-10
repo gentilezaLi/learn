@@ -17,7 +17,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <Router basename={import.meta.env.VITE_BASE_URL || '/'}>
       <Suspense fallback={<div>Loading...</div>}>
         <AppRoutes />
       </Suspense>
