@@ -18,7 +18,8 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@auto/*": ["../../packages/*"]
     },
     "ignoreDeprecations": "6.0",
 
