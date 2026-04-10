@@ -9,11 +9,11 @@
   ],
   "scripts": {
     "bootstrap": "npm install",
-    "dev": "npm run dev --workspace web",
-    "build": "npm run build --workspace web && npm run build --workspace api-function",
-    "lint": "npm run lint --workspace web",
+    "dev": "npm run dev --workspace Template",
+    "build": "npm run build --workspace Template && npm run build --workspace api-function",
+    "lint": "npm run lint --workspace Template",
     "deploy:function": "npm run deploy --workspace api-function",
-    "deploy:web": "npm run deploy --workspace web"
+    "deploy:web": "npm run deploy --workspace Template"
   },
   "devDependencies": {
     "lerna": "^9.0.7",
