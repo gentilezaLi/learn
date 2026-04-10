@@ -1,15 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Suspense } from 'react';
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
 import './App.less';
-import HomePage from './business/home/index.tsx';
-import DetailPage from './business/detail/index';
+import { routes } from './pages/routes';
+
+function AppRoutes() {
+  const element = useRoutes(routes);
+  return element;
+}
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/detail/:id" element={<DetailPage />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <AppRoutes />
+      </Suspense>
     </Router>
   );
 }
