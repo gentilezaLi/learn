@@ -1,4 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
 
 interface ResponseData<T = unknown> {
   code: number;
@@ -26,21 +27,21 @@ class HttpRequest {
       (config) => {
         return config;
       },
-      (error: AxiosError) => {
-        return Promise.reject(this.handleError(error));
+      (error) => {
+        return Promise.reject(this.handleError(error as AxiosError<ResponseData>));
       },
     );
 
     this.instance.interceptors.response.use(
-      (response: AxiosResponse<ResponseData>) => {
-        const { data } = response;
+      (response) => {
+        const data = response.data as ResponseData;
         if (data.code === 200 || data.code === 0) {
           return data;
         }
         return Promise.reject(new Error(data.message || 'Request failed'));
       },
-      (error: AxiosError<ResponseData>) => {
-        return Promise.reject(this.handleError(error));
+      (error) => {
+        return Promise.reject(this.handleError(error as AxiosError<ResponseData>));
       },
     );
   }

@@ -1,15 +1,17 @@
-import { useEffect } from "react";
-import "./App.less";
-import { add } from "@auto/utils";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.less';
+import HomePage from './business/home/index.tsx';
+import DetailPage from './business/detail/index';
 
 function App() {
-  useEffect(() => {
-    console.log(11);
-    const result = add(1, 123);
-    console.log(result);
-  }, []);
-
-  return <main className="page">qqq</main>;
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/detail/:id" element={<DetailPage />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
