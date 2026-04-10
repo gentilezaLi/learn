@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@cloudbase/js-sdk": "^2.18.0",
-    "@lishengzhi/utils": "file:../../packages/utils",
+    "@auto/utils": "file:../../packages/utils",
     "react": "^19.2.4",
     "react-dom": "^19.2.4"
   },

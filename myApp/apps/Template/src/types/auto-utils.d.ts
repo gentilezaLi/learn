@@ -1,4 +1,4 @@
-declare module '@lishengzhi/utils' {
+declare module '@auto/utils' {
   export function unique<T>(list: T[]): T[];
   export function chunk<T>(list: T[], size: number): T[][];
   export function sleep(ms: number): Promise<void>;

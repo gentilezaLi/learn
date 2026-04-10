@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import './App.less';
-import { add } from '@lishengzhi/utils';
+import { useEffect } from "react";
+import "./App.less";
+import { add } from "@auto/utils";
 
 function App() {
   useEffect(() => {
