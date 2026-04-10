@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button, Space, Image } from 'antd-mobile';
-import type { Item } from '../home';
-import { fetchItems, getItemById } from '../home';
+import type { Item } from '@/business/home';
+import { fetchItems, getItemById } from '@/business/home';
 
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
