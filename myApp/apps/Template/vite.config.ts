@@ -19,7 +19,7 @@ export default defineConfig({
       threshold: 10240,
     }),
   ],
-  base: process.env.VITE_BASE_URL || '/',
+  base: '/saas/Template/',
   build: {
     target: 'es2015',
     cssTarget: 'chrome80',
