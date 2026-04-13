@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosError } from 'axios';
 
 interface ResponseData<T = unknown> {
   code: number;
@@ -70,16 +70,26 @@ class HttpRequest {
     }
   }
 
-  public get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ResponseData<T>> {
-    return this.instance.get(url, config);
+  public async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ResponseData<T>> {
+    const response = await this.instance.get(url, config);
+    const data = response.data as ResponseData<T>;
+    if (data.code === 200 || data.code === 0) {
+      return data;
+    }
+    throw new Error(data.message || 'Request failed');
   }
 
-  public post<T = unknown>(
+  public async post<T = unknown>(
     url: string,
     data?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<ResponseData<T>> {
-    return this.instance.post(url, data, config);
+    const response = await this.instance.post(url, data, config);
+    const data = response.data as ResponseData<T>;
+    if (data.code === 200 || data.code === 0) {
+      return data;
+    }
+    throw new Error(data.message || 'Request failed');
   }
 }
 
