@@ -1,13 +1,13 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, Button, Space, Image } from 'antd-mobile';
-import type { Item } from '@/business/home';
-import { fetchItems, getItemById } from '@/business/home';
+import type { ListItem } from '@/services/list';
+import { fetchItems, getItemById } from '@/services/list';
 
 const DetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [item, setItem] = React.useState<Item | null>(null);
+  const [item, setItem] = React.useState<ListItem | null>(null);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {

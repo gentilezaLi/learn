@@ -34,11 +34,7 @@ class HttpRequest {
 
     this.instance.interceptors.response.use(
       (response) => {
-        const data = response.data as ResponseData;
-        if (data.code === 200 || data.code === 0) {
-          return data;
-        }
-        return Promise.reject(new Error(data.message || 'Request failed'));
+        return response;
       },
       (error) => {
         return Promise.reject(this.handleError(error as AxiosError<ResponseData>));
@@ -72,24 +68,24 @@ class HttpRequest {
 
   public async get<T = unknown>(url: string, config?: AxiosRequestConfig): Promise<ResponseData<T>> {
     const response = await this.instance.get(url, config);
-    const data = response.data as ResponseData<T>;
-    if (data.code === 200 || data.code === 0) {
-      return data;
+    const responseData = response.data as ResponseData<T>;
+    if (responseData.code === 200 || responseData.code === 0) {
+      return responseData;
     }
-    throw new Error(data.message || 'Request failed');
+    throw new Error(responseData.message || 'Request failed');
   }
 
   public async post<T = unknown>(
     url: string,
-    data?: unknown,
+    requestData?: unknown,
     config?: AxiosRequestConfig,
   ): Promise<ResponseData<T>> {
-    const response = await this.instance.post(url, data, config);
-    const data = response.data as ResponseData<T>;
-    if (data.code === 200 || data.code === 0) {
-      return data;
+    const response = await this.instance.post(url, requestData, config);
+    const responseData = response.data as ResponseData<T>;
+    if (responseData.code === 200 || responseData.code === 0) {
+      return responseData;
     }
-    throw new Error(data.message || 'Request failed');
+    throw new Error(responseData.message || 'Request failed');
   }
 }
 

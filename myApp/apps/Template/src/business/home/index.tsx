@@ -1,13 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { List, Button, Space, Image } from 'antd-mobile';
-import { fetchItems } from './index';
-import type { Item } from './index';
+import { fetchItems } from '@/services/list';
+import type { ListItem } from '@/services/list';
 import './index.less';
 
 const HomePage: React.FC = () => {
   const navigate = useNavigate();
-  const [items, setItems] = React.useState<Item[]>([]);
+  const [items, setItems] = React.useState<ListItem[]>([]);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
