@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中国象棋</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #8b4513 0%, #a0522d 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .game-container {
+      text-align: center;
+    }
+
+    h1 {
+      color: #ffd700;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+
+    .board-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    #gameCanvas {
+      border: 3px solid #8b4513;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 1.3rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .current-player {
+      color: #ffd700;
+    }
+
+    .current-player span {
+      font-weight: bold;
+    }
+
+    .current-player .red {
+      color: #ff4500;
+      background: rgba(255, 215, 0, 0.2);
+      padding: 2px 10px;
+      border-radius: 15px;
+    }
+
+    .current-player .black {
+      color: #000;
+      background: rgba(255, 215, 0, 0.2);
+      padding: 2px 10px;
+      border-radius: 15px;
+    }
+
+    #restartBtn {
+      margin-top: 15px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      background: #ffd700;
+      color: #8b4513;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    #restartBtn:hover {
+      background: #ffed4e;
+      transform: scale(1.05);
+    }
+
+    .winner {
+      color: #ffd700;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-top: 15px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="game-container">
+    <h1>♚ 中国象棋 ♔</h1>
+    <div class="board-container">
+      <canvas id="gameCanvas" width="640" height="720"></canvas>
+    </div>
+    <div class="info">
+      <div class="current-player">
+        当前: <span id="currentPlayer" class="red">红方</span>
+      </div>
+    </div>
+    <div id="winnerText" class="winner" style="display: none;"></div>
+    <button id="restartBtn">重新开始</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const currentPlayerElement = document.getElementById('currentPlayer');
+    const winnerText = document.getElementById('winnerText');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const boardWidth = 9;
+    const boardHeight = 10;
+    const cellSize = 64;
+    const padding = 32;
+
+    canvas.width = boardWidth * cellSize + padding * 2;
+    canvas.height = boardHeight * cellSize + padding * 2;
+
+    let board = [];
+    let currentPlayer = 1; // 1 = red, 2 = black
+    let gameOver = false;
+    let selectedPiece = null;
+    let validMoves = [];
+
+    // 棋子类型定义
+    const PieceType = {
+      NONE: 0,
+      KING: 1,
+      ADVISOR: 2,
+      ELEPHANT: 3,
+      HORSE: 4,
+      CHARIOT: 5,
+      CANNON: 6,
+      PAWN: 7
+    };
+
+    // 初始化棋盘
+    function initBoard() {
+      board = Array(boardHeight).fill(null).map(() => Array(boardWidth).fill(0));
+
+      // 红方棋子
+      board[0][0] = { type: PieceType.CHARIOT, player: 1 };
+      board[0][1] = { type: PieceType.HORSE, player: 1 };
+      board[0][2] = { type: PieceType.ELEPHANT, player: 1 };
+      board[0][3] = { type: PieceType.ADVISOR, player: 1 };
+      board[0][4] = { type: PieceType.KING, player: 1 };
+      board[0][5] = { type: PieceType.ADVISOR, player: 1 };
+      board[0][6] = { type: PieceType.ELEPHANT, player: 1 };
+      board[0][7] = { type: PieceType.HORSE, player: 1 };
+      board[0][8] = { type: PieceType.CHARIOT, player: 1 };
+      board[2][1] = { type: PieceType.CANNON, player: 1 };
+      board[2][7] = { type: PieceType.CANNON, player: 1 };
+      board[3][0] = { type: PieceType.PAWN, player: 1 };
+      board[3][2] = { type: PieceType.PAWN, player: 1 };
+      board[3][4] = { type: PieceType.PAWN, player: 1 };
+      board[3][6] = { type: PieceType.PAWN, player: 1 };
+      board[3][8] = { type: PieceType.PAWN, player: 1 };
+
+      // 黑方棋子
+      board[9][0] = { type: PieceType.CHARIOT, player: 2 };
+      board[9][1] = { type: PieceType.HORSE, player: 2 };
+      board[9][2] = { type: PieceType.ELEPHANT, player: 2 };
+      board[9][3] = { type: PieceType.ADVISOR, player: 2 };
+      board[9][4] = { type: PieceType.KING, player: 2 };
+      board[9][5] = { type: PieceType.ADVISOR, player: 2 };
+      board[9][6] = { type: PieceType.ELEPHANT, player: 2 };
+      board[9][7] = { type: PieceType.HORSE, player: 2 };
+      board[9][8] = { type: PieceType.CHARIOT, player: 2 };
+      board[7][1] = { type: PieceType.CANNON, player: 2 };
+      board[7][7] = { type: PieceType.CANNON, player: 2 };
+      board[6][0] = { type: PieceType.PAWN, player: 2 };
+      board[6][2] = { type: PieceType.PAWN, player: 2 };
+      board[6][4] = { type: PieceType.PAWN, player: 2 };
+      board[6][6] = { type: PieceType.PAWN, player: 2 };
+      board[6][8] = { type: PieceType.PAWN, player: 2 };
+    }
+
+    function initGame() {
+      initBoard();
+      currentPlayer = 1;
+      gameOver = false;
+      selectedPiece = null;
+      validMoves = [];
+      winnerText.style.display = 'none';
+      updatePlayerDisplay();
+      drawBoard();
+    }
+
+    function updatePlayerDisplay() {
+      if (currentPlayer === 1) {
+        currentPlayerElement.textContent = '红方';
+        currentPlayerElement.className = 'red';
+      } else {
+        currentPlayerElement.textContent = '黑方';
+        currentPlayerElement.className = 'black';
+      }
+    }
+
+    function drawBoard() {
+      // 绘制棋盘背景
+      ctx.fillStyle = '#deb887';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 绘制网格线
+      ctx.strokeStyle = '#8b4513';
+      ctx.lineWidth = 2;
+
+      // 横线
+      for (let i = 0; i < boardHeight; i++) {
+        ctx.beginPath();
+        ctx.moveTo(padding, padding + i * cellSize);
+        ctx.lineTo(padding + (boardWidth - 1) * cellSize, padding + i * cellSize);
+        ctx.stroke();
+      }
+
+      // 竖线
+      for (let i = 0; i < boardWidth; i++) {
+        ctx.beginPath();
+        if (i === 0 || i === 8) {
+          ctx.moveTo(padding + i * cellSize, padding);
+          ctx.lineTo(padding + i * cellSize, padding + (boardHeight - 1) * cellSize);
+        } else {
+          ctx.moveTo(padding + i * cellSize, padding);
+          ctx.lineTo(padding + i * cellSize, padding + 4 * cellSize);
+          ctx.moveTo(padding + i * cellSize, padding + 5 * cellSize);
+          ctx.lineTo(padding + i * cellSize, padding + (boardHeight - 1) * cellSize);
+        }
+        ctx.stroke();
+      }
+
+      // 绘制九宫格
+      ctx.beginPath();
+      // 红方九宫
+      ctx.moveTo(padding + 3 * cellSize, padding);
+      ctx.lineTo(padding + 5 * cellSize, padding + 2 * cellSize);
+      ctx.lineTo(padding + 3 * cellSize, padding + 2 * cellSize);
+      ctx.closePath();
+      ctx.stroke();
+
+      // 黑方九宫
+      ctx.beginPath();
+      ctx.moveTo(padding + 3 * cellSize, padding + 7 * cellSize);
+      ctx.lineTo(padding + 5 * cellSize, padding + 9 * cellSize);
+      ctx.lineTo(padding + 3 * cellSize, padding + 9 * cellSize);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(padding + 5 * cellSize, padding);
+      ctx.lineTo(padding + 3 * cellSize, padding + 2 * cellSize);
+      ctx.lineTo(padding + 5 * cellSize, padding + 2 * cellSize);
+      ctx.closePath();
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(padding + 5 * cellSize, padding + 7 * cellSize);
+      ctx.lineTo(padding + 3 * cellSize, padding + 9 * cellSize);
+      ctx.lineTo(padding + 5 * cellSize, padding + 9 * cellSize);
+      ctx.closePath();
+      ctx.stroke();
+
+      // 绘制棋子
+      for (let y = 0; y < boardHeight; y++) {
+        for (let x = 0; x < boardWidth; x++) {
+          if (board[y][x] !== 0) {
+            drawPiece(x, y, board[y][x]);
+          }
+        }
+      }
+
+      // 绘制有效的移动位置
+      validMoves.forEach(({ x, y }) => {
+        ctx.fillStyle = 'rgba(0, 255, 0, 0.3)';
+        ctx.beginPath();
+        ctx.arc(
+          padding + x * cellSize,
+          padding + y * cellSize,
+          cellSize / 3,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      });
+
+      // 绘制选中的棋子
+      if (selectedPiece) {
+        ctx.strokeStyle = '#ff0000';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.arc(
+          padding + selectedPiece.x * cellSize,
+          padding + selectedPiece.y * cellSize,
+          cellSize / 2 - 2,
+          0,
+          Math.PI * 2
+        );
+        ctx.stroke();
+      }
+    }
+
+    function drawPiece(x, y, piece) {
+      const px = padding + x * cellSize;
+      const py = padding + y * cellSize;
+      const radius = cellSize / 2 - 4;
+
+      // 绘制棋子背景
+      if (piece.player === 1) {
+        ctx.fillStyle = '#ff4500';
+      } else {
+        ctx.fillStyle = '#000000';
+      }
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 绘制棋子边框
+      ctx.strokeStyle = '#ffd700';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(px, py, radius, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // 绘制棋子文字
+      ctx.fillStyle = piece.player === 1 ? '#ffffff' : '#ffd700';
+      ctx.font = 'bold 16px 宋体';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+
+      switch (piece.type) {
+        case PieceType.KING:
+          ctx.fillText('帅', px, py);
+          break;
+        case PieceType.ADVISOR:
+          ctx.fillText('仕', px, py);
+          break;
+        case PieceType.ELEPHANT:
+          ctx.fillText('相', px, py);
+          break;
+        case PieceType.HORSE:
+          ctx.fillText('马', px, py);
+          break;
+        case PieceType.CHARIOT:
+          ctx.fillText('车', px, py);
+          break;
+        case PieceType.CANNON:
+          ctx.fillText('炮', px, py);
+          break;
+        case PieceType.PAWN:
+          ctx.fillText('兵', px, py);
+          break;
+      }
+    }
+
+    function getClickPosition(e) {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.round((e.clientX - rect.left - padding) / cellSize);
+      const y = Math.round((e.clientY - rect.top - padding) / cellSize);
+      return { x, y };
+    }
+
+    function isValidMove(x, y, piece) {
+      if (x < 0 || x >= boardWidth || y < 0 || y >= boardHeight) {
+        return false;
+      }
+
+      if (board[y][x] !== 0 && board[y][x].player === piece.player) {
+        return false;
+      }
+
+      switch (piece.type) {
+        case PieceType.KING:
+          return isValidKingMove(x, y, piece);
+        case PieceType.ADVISOR:
+          return isValidAdvisorMove(x, y, piece);
+        case PieceType.ELEPHANT:
+          return isValidElephantMove(x, y, piece);
+        case PieceType.HORSE:
+          return isValidHorseMove(x, y, piece);
+        case PieceType.CHARIOT:
+          return isValidChariotMove(x, y, piece);
+        case PieceType.CANNON:
+          return isValidCannonMove(x, y, piece);
+        case PieceType.PAWN:
+          return isValidPawnMove(x, y, piece);
+        default:
+          return false;
+      }
+    }
+
+    function isValidKingMove(x, y, piece) {
+      // 帅/将只能在九宫内移动
+      if (piece.player === 1) {
+        if (x < 3 || x > 5 || y < 0 || y > 2) {
+          return false;
+        }
+      } else {
+        if (x < 3 || x > 5 || y < 7 || y > 9) {
+          return false;
+        }
+      }
+
+      // 只能移动一格
+      const dx = Math.abs(x - selectedPiece.x);
+      const dy = Math.abs(y - selectedPiece.y);
+      return (dx === 1 && dy === 0) || (dx === 0 && dy === 1);
+    }
+
+    function isValidAdvisorMove(x, y, piece) {
+      // 士/仕只能在九宫内移动
+      if (piece.player === 1) {
+        if (x < 3 || x > 5 || y < 0 || y > 2) {
+          return false;
+        }
+      } else {
+        if (x < 3 || x > 5 || y < 7 || y > 9) {
+          return false;
+        }
+      }
+
+      // 只能斜着走一格
+      const dx = Math.abs(x - selectedPiece.x);
+      const dy = Math.abs(y - selectedPiece.y);
+      return dx === 1 && dy === 1;
+    }
+
+    function isValidElephantMove(x, y, piece) {
+      // 象/相不能过河
+      if (piece.player === 1 && y > 4) {
+        return false;
+      }
+      if (piece.player === 2 && y < 5) {
+        return false;
+      }
+
+      // 只能走田字
+      const dx = Math.abs(x - selectedPiece.x);
+      const dy = Math.abs(y - selectedPiece.y);
+      if (dx !== 2 || dy !== 2) {
+        return false;
+      }
+
+      // 象眼不能被塞住
+      const midX = (selectedPiece.x + x) / 2;
+      const midY = (selectedPiece.y + y) / 2;
+      return board[midY][midX] === 0;
+    }
+
+    function isValidHorseMove(x, y, piece) {
+      // 马走日
+      const dx = Math.abs(x - selectedPiece.x);
+      const dy = Math.abs(y - selectedPiece.y);
+      if (!((dx === 1 && dy === 2) || (dx === 2 && dy === 1))) {
+        return false;
+      }
+
+      // 马腿不能被绊住
+      if (dx === 2) {
+        const midX = selectedPiece.x + (x - selectedPiece.x) / 2;
+        if (board[selectedPiece.y][midX] !== 0) {
+          return false;
+        }
+      } else {
+        const midY = selectedPiece.y + (y - selectedPiece.y) / 2;
+        if (board[midY][selectedPiece.x] !== 0) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function isValidChariotMove(x, y, piece) {
+      // 车走直线
+      if (x !== selectedPiece.x && y !== selectedPiece.y) {
+        return false;
+      }
+
+      // 检查路径是否有棋子阻挡
+      if (x === selectedPiece.x) {
+        // 垂直移动
+        const start = Math.min(selectedPiece.y, y) + 1;
+        const end = Math.max(selectedPiece.y, y);
+        for (let i = start; i < end; i++) {
+          if (board[i][x] !== 0) {
+            return false;
+          }
+        }
+      } else {
+        // 水平移动
+        const start = Math.min(selectedPiece.x, x) + 1;
+        const end = Math.max(selectedPiece.x, x);
+        for (let i = start; i < end; i++) {
+          if (board[y][i] !== 0) {
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    function isValidCannonMove(x, y, piece) {
+      // 炮走直线
+      if (x !== selectedPiece.x && y !== selectedPiece.y) {
+        return false;
+      }
+
+      // 计算路径上的棋子数量
+      let pieceCount = 0;
+      if (x === selectedPiece.x) {
+        // 垂直移动
+        const start = Math.min(selectedPiece.y, y) + 1;
+        const end = Math.max(selectedPiece.y, y);
+        for (let i = start; i < end; i++) {
+          if (board[i][x] !== 0) {
+            pieceCount++;
+          }
+        }
+      } else {
+        // 水平移动
+        const start = Math.min(selectedPiece.x, x) + 1;
+        const end = Math.max(selectedPiece.x, x);
+        for (let i = start; i < end; i++) {
+          if (board[y][i] !== 0) {
+            pieceCount++;
+          }
+        }
+      }
+
+      // 炮吃子需要一个炮架，移动不需要
+      if (board[y][x] === 0) {
+        return pieceCount === 0;
+      } else {
+        return pieceCount === 1;
+      }
+    }
+
+    function isValidPawnMove(x, y, piece) {
+      const dx = Math.abs(x - selectedPiece.x);
+      const dy = y - selectedPiece.y;
+
+      // 兵/卒未过河只能向前走
+      if (piece.player === 1 && selectedPiece.y < 5) {
+        if (dy !== 1 || dx !== 0) {
+          return false;
+        }
+      } else if (piece.player === 2 && selectedPiece.y > 4) {
+        if (dy !== -1 || dx !== 0) {
+          return false;
+        }
+      } else {
+        // 过河后可以横向移动
+        if (piece.player === 1) {
+          if (!((dy === 1 && dx === 0) || (dy === 0 && dx === 1))) {
+            return false;
+          }
+        } else {
+          if (!((dy === -1 && dx === 0) || (dy === 0 && dx === 1))) {
+            return false;
+          }
+        }
+      }
+
+      // 只能移动一格
+      return Math.abs(dx) + Math.abs(dy) === 1;
+    }
+
+    function getValidMoves(x, y) {
+      const piece = board[y][x];
+      if (!piece || piece.player !== currentPlayer) {
+        return [];
+      }
+
+      const moves = [];
+      for (let i = 0; i < boardWidth; i++) {
+        for (let j = 0; j < boardHeight; j++) {
+          if (isValidMove(i, j, piece)) {
+            moves.push({ x: i, y: j });
+          }
+        }
+      }
+      return moves;
+    }
+
+    function checkGameOver() {
+      // 检查是否有一方的帅/将被吃
+      let redKingExists = false;
+      let blackKingExists = false;
+
+      for (let y = 0; y < boardHeight; y++) {
+        for (let x = 0; x < boardWidth; x++) {
+          if (board[y][x] !== 0 && board[y][x].type === PieceType.KING) {
+            if (board[y][x].player === 1) {
+              redKingExists = true;
+            } else {
+              blackKingExists = true;
+            }
+          }
+        }
+      }
+
+      if (!redKingExists) {
+        gameOver = true;
+        winnerText.textContent = '🎉 黑方获胜!';
+        winnerText.style.display = 'block';
+        return true;
+      }
+
+      if (!blackKingExists) {
+        gameOver = true;
+        winnerText.textContent = '🎉 红方获胜!';
+        winnerText.style.display = 'block';
+        return true;
+      }
+
+      return false;
+    }
+
+    canvas.addEventListener('click', (e) => {
+      if (gameOver) return;
+
+      const { x, y } = getClickPosition(e);
+
+      // 检查是否点击了有效的移动位置
+      const moveIndex = validMoves.findIndex(move => move.x === x && move.y === y);
+      if (moveIndex !== -1 && selectedPiece) {
+        // 移动棋子
+        board[y][x] = board[selectedPiece.y][selectedPiece.x];
+        board[selectedPiece.y][selectedPiece.x] = 0;
+        selectedPiece = null;
+        validMoves = [];
+
+        // 检查游戏是否结束
+        if (!checkGameOver()) {
+          // 切换玩家
+          currentPlayer = currentPlayer === 1 ? 2 : 1;
+          updatePlayerDisplay();
+        }
+      } else {
+        // 选择棋子
+        if (board[y][x] !== 0 && board[y][x].player === currentPlayer) {
+          selectedPiece = { x, y };
+          validMoves = getValidMoves(x, y);
+        } else {
+          selectedPiece = null;
+          validMoves = [];
+        }
+      }
+
+      drawBoard();
+    });
+
+    restartBtn.addEventListener('click', initGame);
+
+    initGame();
+  </script>
+</body>
+
+</html>
