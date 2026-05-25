@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三人跳棋</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .game-container {
+      text-align: center;
+    }
+
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
+      font-size: 2.5rem;
+      text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    #gameCanvas {
+      border: 3px solid #4a90d9;
+      border-radius: 10px;
+      background: #1a1a2e;
+      box-shadow: 0 0 30px rgba(74, 144, 217, 0.3);
+    }
+
+    .info {
+      margin-top: 20px;
+      color: #e8e8e8;
+      font-size: 1.2rem;
+    }
+
+    .current-player {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .player-red {
+      background: rgba(255, 107, 107, 0.3);
+      border: 2px solid #ff6b6b;
+      color: #ff6b6b;
+    }
+
+    .player-green {
+      background: rgba(78, 204, 163, 0.3);
+      border: 2px solid #4ecca3;
+      color: #4ecca3;
+    }
+
+    .player-blue {
+      background: rgba(74, 144, 217, 0.3);
+      border: 2px solid #4a90d9;
+      color: #4a90d9;
+    }
+
+    .controls {
+      margin-top: 15px;
+      color: #888;
+      font-size: 0.9rem;
+    }
+
+    #restartBtn {
+      margin-top: 15px;
+      padding: 12px 30px;
+      font-size: 1rem;
+      background: #4a90d9;
+      color: #fff;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    #restartBtn:hover {
+      background: #3a80c9;
+      transform: scale(1.05);
+    }
+
+    .game-over {
+      color: #ff6b6b;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-top: 15px;
+      text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="game-container">
+    <h1>🔷 三人跳棋 🔶</h1>
+    <canvas id="gameCanvas" width="700" height="650"></canvas>
+    <div class="info">
+      当前回合: <span id="currentPlayer" class="current-player player-red">红方</span>
+    </div>
+    <div id="gameOverText" class="game-over" style="display: none;">游戏结束!</div>
+    <button id="restartBtn">重新开始</button>
+    <div class="controls">
+      点击棋子选中，再点击目标位置移动
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const currentPlayerElement = document.getElementById('currentPlayer');
+    const gameOverText = document.getElementById('gameOverText');
+    const restartBtn = document.getElementById('restartBtn');
+
+    const playerColors = {
+      red: { fill: '#ff6b6b', stroke: '#cc5555', name: '红方' },
+      green: { fill: '#4ecca3', stroke: '#3dba93', name: '绿方' },
+      blue: { fill: '#4a90d9', stroke: '#3a80c9', name: '蓝方' }
+    };
+
+    const playerOrder = ['red', 'green', 'blue'];
+    let currentPlayerIndex = 0;
+    let selectedPiece = null;
+    let validMoves = [];
+    let board = [];
+    let isGameOver = false;
+    let winner = null;
+
+    // 生成六边形棋盘坐标
+    function generateBoard() {
+      board = [];
+      const rows = 9;
+
+      for (let row = 0; row < rows; row++) {
+        board[row] = [];
+        const cols = row < 5 ? row + 5 : 13 - row;
+
+        for (let col = 0; col < cols; col++) {
+          const x = canvas.width / 2 + (col - (cols - 1) / 2) * 70;
+          const y = 50 + row * 60;
+
+          let player = null;
+          // 红方起始位置（底部）
+          if (row >= 7) {
+            player = 'red';
+          }
+          // 绿方起始位置（左侧）
+          else if (row <= 2 && col <= 1) {
+            player = 'green';
+          }
+          // 蓝方起始位置（右侧）
+          else if (row <= 2 && col >= cols - 2) {
+            player = 'blue';
+          }
+
+          board[row][col] = { x, y, player, row, col };
+        }
+      }
+    }
+
+    // 绘制棋盘
+    function drawBoard() {
+      ctx.fillStyle = '#1a1a2e';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // 绘制六边形网格
+      for (let row = 0; row < board.length; row++) {
+        for (let col = 0; col < board[row].length; col++) {
+          const cell = board[row][col];
+          drawHexagon(cell.x, cell.y, 22, '#2a2a4e');
+
+          // 绘制棋子
+          if (cell.player) {
+            const color = playerColors[cell.player];
+            ctx.fillStyle = color.fill;
+            ctx.strokeStyle = color.stroke;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cell.x, cell.y, 18, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 选中效果
+            if (selectedPiece && selectedPiece.row === row && selectedPiece.col === col) {
+              ctx.strokeStyle = '#fff';
+              ctx.lineWidth = 3;
+              ctx.beginPath();
+              ctx.arc(cell.x, cell.y, 22, 0, Math.PI * 2);
+              ctx.stroke();
+            }
+          }
+        }
+      }
+
+      // 绘制有效移动位置
+      for (const move of validMoves) {
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.beginPath();
+        ctx.arc(move.x, move.y, 10, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // 绘制六边形 - 统一颜色
+    function drawHexagon(cx, cy, r, color) {
+      ctx.fillStyle = '#2d3436'; // 统一的深灰色背景
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const angle = (Math.PI / 3) * i - Math.PI / 6;
+        const x = cx + r * Math.cos(angle);
+        const y = cy + r * Math.sin(angle);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.strokeStyle = '#636e72'; // 统一的边框颜色
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // 获取相邻位置
+    function getNeighbors(row, col) {
+      const neighbors = [];
+      const directions = [
+        { dr: -1, dc: 0 },  // 上
+        { dr: -1, dc: 1 },  // 右上
+        { dr: 0, dc: 1 },   // 右
+        { dr: 1, dc: 0 },   // 下
+        { dr: 1, dc: -1 },  // 左下
+        { dr: 0, dc: -1 }   // 左
+      ];
+
+      for (const { dr, dc } of directions) {
+        const newRow = row + dr;
+        const newCol = col + dc;
+
+        if (newRow >= 0 && newRow < board.length &&
+          newCol >= 0 && newCol < (board[newRow]?.length || 0)) {
+          neighbors.push({ row: newRow, col: newCol });
+        }
+      }
+
+      return neighbors;
+    }
+
+    // 获取有效移动
+    function getValidMoves(row, col) {
+      const moves = [];
+      const neighbors = getNeighbors(row, col);
+
+      // 普通移动
+      for (const n of neighbors) {
+        if (!board[n.row][n.col].player) {
+          moves.push(board[n.row][n.col]);
+        }
+      }
+
+      // 跳跃移动
+      for (const n of neighbors) {
+        if (board[n.row][n.col].player) {
+          const jumpRow = n.row + (n.row - row);
+          const jumpCol = n.col + (n.col - col);
+
+          if (jumpRow >= 0 && jumpRow < board.length &&
+            jumpCol >= 0 && jumpCol < (board[jumpRow]?.length || 0) &&
+            !board[jumpRow][jumpCol].player) {
+            moves.push(board[jumpRow][jumpCol]);
+
+            // 连续跳跃
+            const doubleJump = getJumpMoves(jumpRow, jumpCol, row, col);
+            moves.push(...doubleJump);
+          }
+        }
+      }
+
+      return moves;
+    }
+
+    // 递归获取连续跳跃
+    function getJumpMoves(row, col, fromRow, fromCol) {
+      const moves = [];
+      const neighbors = getNeighbors(row, col);
+
+      for (const n of neighbors) {
+        if (board[n.row][n.col].player &&
+          !(n.row === fromRow && n.col === fromCol)) {
+          const jumpRow = n.row + (n.row - row);
+          const jumpCol = n.col + (n.col - col);
+
+          if (jumpRow >= 0 && jumpRow < board.length &&
+            jumpCol >= 0 && jumpCol < (board[jumpRow]?.length || 0) &&
+            !board[jumpRow][jumpCol].player) {
+            moves.push(board[jumpRow][jumpCol]);
+
+            const doubleJump = getJumpMoves(jumpRow, jumpCol, row, col);
+            moves.push(...doubleJump);
+          }
+        }
+      }
+
+      return moves;
+    }
+
+    // 检查胜利条件
+    function checkWin(player) {
+      let count = 0;
+      const targetRows = player === 'red' ? [0, 1, 2] :
+        player === 'green' ? [6, 7, 8] : [6, 7, 8];
+
+      for (let row of targetRows) {
+        for (let col = 0; col < board[row].length; col++) {
+          if (board[row][col].player === player) {
+            count++;
+          }
+        }
+      }
+
+      // 如果玩家有3个棋子到达目标区域即获胜
+      return count >= 3;
+    }
+
+    // 移动棋子
+    function movePiece(fromRow, fromCol, toRow, toCol) {
+      const player = board[fromRow][fromCol].player;
+      board[toRow][toCol].player = player;
+      board[fromRow][fromCol].player = null;
+
+      // 检查是否跳过了其他棋子（吃子）
+      const midRow = Math.floor((fromRow + toRow) / 2);
+      const midCol = Math.floor((fromCol + toCol) / 2);
+
+      if (midRow !== fromRow || midCol !== fromCol) {
+        // 检查中间位置是否有棋子
+        if (board[midRow]?.[midCol]?.player) {
+          // 被跳过的棋子回到起始位置附近
+          resetPiece(midRow, midCol);
+        }
+      }
+
+      // 检查胜利
+      if (checkWin(player)) {
+        isGameOver = true;
+        winner = player;
+        gameOverText.textContent = `${playerColors[player].name}获胜!`;
+        gameOverText.style.display = 'block';
+      } else {
+        // 切换玩家
+        currentPlayerIndex = (currentPlayerIndex + 1) % 3;
+        updateCurrentPlayerDisplay();
+      }
+
+      selectedPiece = null;
+      validMoves = [];
+    }
+
+    // 将被吃的棋子放回起始区域
+    function resetPiece(row, col) {
+      const player = board[row][col].player;
+      board[row][col].player = null;
+
+      // 找到起始区域的空位
+      for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < board[r].length; c++) {
+          if (!board[r][c].player) {
+            // 红方起始区
+            if (player === 'red' && r >= 7) {
+              board[r][c].player = player;
+              return;
+            }
+            // 绿方起始区
+            if (player === 'green' && r <= 2 && c <= 1) {
+              board[r][c].player = player;
+              return;
+            }
+            // 蓝方起始区
+            if (player === 'blue' && r <= 2 && c >= board[r].length - 2) {
+              board[r][c].player = player;
+              return;
+            }
+          }
+        }
+      }
+
+      // 如果起始区没有空位，放在任意空位
+      for (let r = 0; r < board.length; r++) {
+        for (let c = 0; c < board[r].length; c++) {
+          if (!board[r][c].player) {
+            board[r][c].player = player;
+            return;
+          }
+        }
+      }
+    }
+
+    // 更新当前玩家显示
+    function updateCurrentPlayerDisplay() {
+      const player = playerOrder[currentPlayerIndex];
+      currentPlayerElement.textContent = playerColors[player].name;
+      currentPlayerElement.className = `current-player player-${player}`;
+    }
+
+    // 处理点击
+    function handleClick(e) {
+      if (isGameOver) return;
+
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // 找到点击的格子
+      let clickedCell = null;
+      for (let row = 0; row < board.length; row++) {
+        for (let col = 0; col < board[row].length; col++) {
+          const cell = board[row][col];
+          const dx = x - cell.x;
+          const dy = y - cell.y;
+
+          if (dx * dx + dy * dy < 300) { // 点击范围
+            clickedCell = cell;
+            break;
+          }
+        }
+        if (clickedCell) break;
+      }
+
+      if (!clickedCell) return;
+
+      const currentPlayer = playerOrder[currentPlayerIndex];
+
+      if (!selectedPiece) {
+        // 选择棋子
+        if (clickedCell.player === currentPlayer) {
+          selectedPiece = clickedCell;
+          validMoves = getValidMoves(clickedCell.row, clickedCell.col);
+        }
+      } else {
+        // 移动棋子
+        if (validMoves.some(m => m.row === clickedCell.row && m.col === clickedCell.col)) {
+          movePiece(selectedPiece.row, selectedPiece.col, clickedCell.row, clickedCell.col);
+        } else if (clickedCell.player === currentPlayer) {
+          // 选择另一个棋子
+          selectedPiece = clickedCell;
+          validMoves = getValidMoves(clickedCell.row, clickedCell.col);
+        } else {
+          // 取消选择
+          selectedPiece = null;
+          validMoves = [];
+        }
+      }
+
+      drawBoard();
+    }
+
+    // 初始化游戏
+    function initGame() {
+      generateBoard();
+      currentPlayerIndex = 0;
+      selectedPiece = null;
+      validMoves = [];
+      isGameOver = false;
+      winner = null;
+      gameOverText.style.display = 'none';
+      updateCurrentPlayerDisplay();
+      drawBoard();
+    }
+
+    canvas.addEventListener('click', handleClick);
+    restartBtn.addEventListener('click', initGame);
+
+    initGame();
+  </script>
+</body>
+
+</html>

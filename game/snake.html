@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             display: flex;
             justify-content: center;
@@ -18,36 +20,43 @@
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         .game-container {
             text-align: center;
         }
+
         h1 {
             color: #4ecca3;
             margin-bottom: 20px;
             font-size: 2.5rem;
             text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
         }
+
         #gameCanvas {
             border: 3px solid #4ecca3;
             border-radius: 10px;
             background: #0f0f23;
             box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);
         }
+
         .info {
             margin-top: 20px;
             color: #e8e8e8;
             font-size: 1.2rem;
         }
+
         .score {
             color: #4ecca3;
             font-weight: bold;
             font-size: 1.5rem;
         }
+
         .controls {
             margin-top: 15px;
             color: #888;
             font-size: 0.9rem;
         }
+
         #restartBtn {
             margin-top: 15px;
             padding: 12px 30px;
@@ -60,10 +69,12 @@
             font-weight: bold;
             transition: all 0.3s;
         }
+
         #restartBtn:hover {
             background: #3db892;
             transform: scale(1.05);
         }
+
         .game-over {
             color: #ff6b6b;
             font-size: 2rem;
@@ -73,10 +84,11 @@
         }
     </style>
 </head>
+
 <body>
     <div class="game-container">
         <h1>🐍 贪吃蛇</h1>
-        <canvas id="gameCanvas" width="400" height="400"></canvas>
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
         <div class="info">
             分数: <span class="score" id="score">0</span>
         </div>
@@ -174,7 +186,7 @@
                     segment.y * gridSize + gridSize / 2,
                     gridSize / 2
                 );
-                
+
                 if (index === 0) {
                     gradient.addColorStop(0, '#5dff9e');
                     gradient.addColorStop(1, '#4ecca3');
@@ -182,11 +194,11 @@
                     gradient.addColorStop(0, '#4ecca3');
                     gradient.addColorStop(1, '#3db892');
                 }
-                
+
                 ctx.fillStyle = gradient;
                 ctx.shadowColor = '#4ecca3';
                 ctx.shadowBlur = index === 0 ? 15 : 5;
-                
+
                 ctx.beginPath();
                 ctx.roundRect(
                     segment.x * gridSize + 1,
@@ -230,20 +242,20 @@
             if (isGameOver) return;
 
             direction = { ...nextDirection };
-            
+
             const head = { x: snake[0].x + direction.x, y: snake[0].y + direction.y };
 
-            // Wall collision
-            if (head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount) {
-                gameOver();
-                return;
-            }
+            // Wall collision - wrap around (穿墙模式)
+            if (head.x < 0) head.x = tileCount - 1;
+            if (head.x >= tileCount) head.x = 0;
+            if (head.y < 0) head.y = tileCount - 1;
+            if (head.y >= tileCount) head.y = 0;
 
-            // Self collision
-            if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
-                gameOver();
-                return;
-            }
+            // Self collision - disabled (撞自己不死)
+            // if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
+            //     gameOver();
+            //     return;
+            // }
 
             snake.unshift(head);
 
@@ -252,6 +264,13 @@
                 score += 10;
                 scoreElement.textContent = score;
                 placeFood();
+
+                // 增加100节长度（当前已经添加了1节头部，还需要添加99节尾部）
+                for (let i = 0; i < 99; i++) {
+                    const tail = snake[snake.length - 1];
+                    snake.push({ ...tail });
+                }
+
                 // Speed up slightly
                 if (gameSpeed > 50) {
                     gameSpeed -= 2;
@@ -314,4 +333,5 @@
         startGame();
     </script>
 </body>
+
 </html>
