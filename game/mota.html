@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>20层魔塔</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #172033;
+      --panel: #222b3d;
+      --panel-soft: #2c364a;
+      --line: rgba(255, 255, 255, 0.12);
+      --text: #f7efe2;
+      --muted: #aeb8c7;
+      --accent: #e8a84f;
+      --accent-2: #59c3c3;
+      --danger: #e76767;
+      --ok: #78d38b;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 18px;
+      color: var(--text);
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(232, 168, 79, 0.2), transparent 25%),
+        radial-gradient(circle at 90% 18%, rgba(89, 195, 195, 0.18), transparent 26%),
+        linear-gradient(135deg, #101827, var(--bg) 58%, #26364f);
+    }
+
+    .shell {
+      width: min(100%, 1120px);
+      min-height: calc(100vh - 36px);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(360px, 592px) 1fr;
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .stage,
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(20, 29, 45, 0.82);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .stage {
+      display: grid;
+      place-items: center;
+      padding: 18px;
+    }
+
+    #game {
+      width: min(100%, 546px);
+      aspect-ratio: 1;
+      border-radius: 6px;
+      background: #141923;
+      image-rendering: pixelated;
+      box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.08), 0 18px 34px rgba(0, 0, 0, 0.36);
+      cursor: pointer;
+      touch-action: manipulation;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    h1 {
+      color: #fff8e8;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .floor-badge {
+      min-width: 72px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #121824;
+      text-align: center;
+      font-weight: 800;
+      background: var(--accent);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .stat {
+      min-height: 58px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel-soft);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .stat strong {
+      display: block;
+      margin-top: 5px;
+      color: var(--text);
+      font-size: 18px;
+      letter-spacing: 0;
+    }
+
+    .keys {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .key-box {
+      min-height: 46px;
+      padding: 9px 8px;
+      border-radius: 8px;
+      color: #151b26;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .yellow {
+      background: #f2cd55;
+    }
+
+    .blue {
+      background: #68a5f2;
+    }
+
+    .red {
+      background: #eb7169;
+    }
+
+    .message,
+    .shop,
+    .monster-list,
+    .actions,
+    .dpad {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .message {
+      min-height: 54px;
+      padding: 12px;
+      color: #fff3d6;
+      line-height: 1.5;
+    }
+
+    .shop,
+    .monster-list {
+      padding: 12px;
+    }
+
+    .section-title {
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .shop {
+      display: none;
+      gap: 8px;
+    }
+
+    .shop.active {
+      display: grid;
+    }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    button {
+      min-height: 40px;
+      border: 0;
+      border-radius: 8px;
+      color: #121824;
+      background: var(--accent);
+      cursor: pointer;
+      font-weight: 800;
+      transition: transform 0.16s ease, opacity 0.16s ease, background 0.16s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #f2b965;
+    }
+
+    button.secondary {
+      color: var(--text);
+      background: #3c485d;
+    }
+
+    button.secondary:hover {
+      background: #46546b;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      transform: none;
+    }
+
+    .monster-list {
+      min-height: 126px;
+      overflow: auto;
+    }
+
+    .monster-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 7px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .monster-row:first-of-type {
+      border-top: 0;
+    }
+
+    .monster-row strong {
+      color: var(--text);
+    }
+
+    .damage-low {
+      color: var(--ok);
+    }
+
+    .damage-mid {
+      color: var(--accent);
+    }
+
+    .damage-high {
+      color: var(--danger);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 10px;
+    }
+
+    .dpad {
+      width: 150px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 46px);
+      grid-template-rows: repeat(3, 42px);
+      gap: 4px;
+      justify-content: center;
+      padding: 10px;
+    }
+
+    .dpad button {
+      min-height: 42px;
+      color: var(--text);
+      background: #334052;
+      font-size: 18px;
+    }
+
+    .dpad .up {
+      grid-column: 2;
+    }
+
+    .dpad .left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .dpad .right {
+      grid-column: 3;
+      grid-row: 2;
+    }
+
+    .dpad .down {
+      grid-column: 2;
+      grid-row: 3;
+    }
+
+    @media (max-width: 880px) {
+      body {
+        padding: 12px;
+      }
+
+      .shell {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .panel {
+        order: -1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <section class="stage" aria-label="魔塔地图">
+      <canvas id="game" width="546" height="546"></canvas>
+    </section>
+
+    <aside class="panel">
+      <div class="title-row">
+        <h1>20层魔塔</h1>
+        <div class="floor-badge"><span id="floor">1</span>F</div>
+      </div>
+
+      <section class="stats" aria-live="polite">
+        <div class="stat"><span>生命</span><strong id="hp">0</strong></div>
+        <div class="stat"><span>攻击</span><strong id="atk">0</strong></div>
+        <div class="stat"><span>防御</span><strong id="def">0</strong></div>
+        <div class="stat"><span>金币 / 经验</span><strong id="wealth">0 / 0</strong></div>
+      </section>
+
+      <section class="keys">
+        <div class="key-box yellow">黄钥匙 <span id="yellowKey">0</span></div>
+        <div class="key-box blue">蓝钥匙 <span id="blueKey">0</span></div>
+        <div class="key-box red">红钥匙 <span id="redKey">0</span></div>
+      </section>
+
+      <div class="message" id="message">勇者进入魔塔，目标是击败第20层魔王。</div>
+
+      <section class="shop" id="shop">
+        <div class="section-title">塔中商店</div>
+        <div class="shop-grid">
+          <button data-buy="attack" type="button">金币买攻击</button>
+          <button data-buy="defense" type="button">金币买防御</button>
+          <button data-buy="health" type="button">金币买生命</button>
+          <button data-buy="training" type="button">经验训练</button>
+        </div>
+      </section>
+
+      <section class="monster-list" id="monsterList">
+        <div class="section-title">本层怪物</div>
+      </section>
+
+      <section class="actions">
+        <button id="saveBtn" class="secondary" type="button">存档</button>
+        <button id="loadBtn" class="secondary" type="button">读档</button>
+        <button id="restartBtn" type="button">重开</button>
+      </section>
+
+      <section class="dpad" aria-label="移动按钮">
+        <button class="up" data-move="0,-1" type="button">↑</button>
+        <button class="left" data-move="-1,0" type="button">←</button>
+        <button class="right" data-move="1,0" type="button">→</button>
+        <button class="down" data-move="0,1" type="button">↓</button>
+      </section>
+    </aside>
+  </main>
+
+  <script>
+    const canvas = document.querySelector('#game');
+    const ctx = canvas.getContext('2d');
+    const els = {
+      floor: document.querySelector('#floor'),
+      hp: document.querySelector('#hp'),
+      atk: document.querySelector('#atk'),
+      def: document.querySelector('#def'),
+      wealth: document.querySelector('#wealth'),
+      yellowKey: document.querySelector('#yellowKey'),
+      blueKey: document.querySelector('#blueKey'),
+      redKey: document.querySelector('#redKey'),
+      message: document.querySelector('#message'),
+      shop: document.querySelector('#shop'),
+      monsterList: document.querySelector('#monsterList')
+    };
+
+    const TILE = 42;
+    const SIZE = 13;
+    const STORAGE_KEY = 'codex-mota-20-save-v1';
+    const stairDown = { x: 1, y: 11 };
+    const stairUp = { x: 11, y: 1 };
+    const colors = {
+      floor: '#d8bd88',
+      floor2: '#c89d62',
+      wall: '#475266',
+      wallDark: '#242d3d',
+      grid: 'rgba(54, 39, 25, 0.22)',
+      text: '#fff8e8'
+    };
+
+    const monsters = {
+      '1': { name: '绿头怪', hp: 45, atk: 24, def: 3, gold: 2, exp: 1, color: '#6fcf73' },
+      '2': { name: '红头怪', hp: 65, atk: 34, def: 6, gold: 3, exp: 2, color: '#e25f5f' },
+      '3': { name: '小蝙蝠', hp: 85, atk: 48, def: 10, gold: 5, exp: 3, color: '#8b72dc' },
+      '4': { name: '骷髅人', hp: 120, atk: 66, def: 18, gold: 7, exp: 5, color: '#d8d0c4' },
+      '5': { name: '兽人', hp: 165, atk: 88, def: 30, gold: 10, exp: 7, color: '#9fbe5b' },
+      '6': { name: '初级法师', hp: 210, atk: 118, def: 42, gold: 14, exp: 10, color: '#5fb4e8' },
+      '7': { name: '骑士', hp: 290, atk: 152, def: 62, gold: 18, exp: 13, color: '#c9b36b' },
+      '8': { name: '守卫', hp: 390, atk: 198, def: 88, gold: 24, exp: 18, color: '#6aa2a8' },
+      '9': { name: '恶魔', hp: 620, atk: 255, def: 120, gold: 36, exp: 26, color: '#b65398' },
+      X: { name: '魔王', hp: 1800, atk: 330, def: 145, gold: 120, exp: 80, color: '#2d111a' }
+    };
+
+    const doorInfo = {
+      y: { key: 'yellow', name: '黄门', color: '#e6c34c' },
+      b: { key: 'blue', name: '蓝门', color: '#5197df' },
+      r: { key: 'red', name: '红门', color: '#de5f57' }
+    };
+
+    const itemInfo = {
+      k: { name: '黄钥匙', color: '#f2cd55', icon: '钥', apply: hero => hero.keys.yellow += 1 },
+      l: { name: '蓝钥匙', color: '#68a5f2', icon: '钥', apply: hero => hero.keys.blue += 1 },
+      m: { name: '红钥匙', color: '#eb7169', icon: '钥', apply: hero => hero.keys.red += 1 },
+      h: { name: '小血瓶', color: '#ef6f6c', icon: '+', apply: hero => hero.hp += 300 },
+      H: { name: '大血瓶', color: '#d94545', icon: '+', apply: hero => hero.hp += 850 },
+      A: { name: '红宝石', color: '#e95757', icon: '攻', apply: hero => hero.atk += 4 },
+      D: { name: '蓝宝石', color: '#5fa3f3', icon: '防', apply: hero => hero.def += 4 },
+      S: { name: '铁剑', color: '#d9dde5', icon: '剑', apply: hero => hero.atk += 12 },
+      Q: { name: '铁盾', color: '#b9c5d8', icon: '盾', apply: hero => hero.def += 12 },
+      T: { name: '圣剑', color: '#ffe09a', icon: '圣', apply: hero => hero.atk += 26 },
+      O: { name: '圣盾', color: '#9bd7ff', icon: '护', apply: hero => hero.def += 26 }
+    };
+
+    let floors = [];
+    let hero = createHero();
+
+    function createHero() {
+      return {
+        floor: 1,
+        x: stairDown.x,
+        y: stairDown.y,
+        hp: 1500,
+        atk: 55,
+        def: 25,
+        gold: 0,
+        exp: 0,
+        shopLevel: 0,
+        won: false,
+        keys: { yellow: 1, blue: 0, red: 0 }
+      };
+    }
+
+    function createBaseMap() {
+      const map = Array.from({ length: SIZE }, (_, y) =>
+        Array.from({ length: SIZE }, (_, x) => (x === 0 || y === 0 || x === SIZE - 1 || y === SIZE - 1 ? '#' : '.'))
+      );
+
+      for (let i = 1; i < SIZE - 1; i++) {
+        map[4][i] = '#';
+        map[8][i] = '#';
+        map[i][4] = '#';
+        map[i][8] = '#';
+      }
+
+      [
+        [2, 4], [6, 4], [10, 4], [2, 8], [6, 8], [10, 8],
+        [4, 2], [4, 6], [4, 10], [8, 2], [8, 6], [8, 10]
+      ].forEach(([x, y]) => map[y][x] = '.');
+
+      return map;
+    }
+
+    function buildFloor(floor) {
+      const map = createBaseMap();
+      const set = (x, y, tile) => { map[y][x] = tile; };
+      const put = (x, y, tile) => {
+        if (map[y][x] === '.') map[y][x] = tile;
+      };
+
+      if (floor > 1) set(stairDown.x, stairDown.y, '<');
+      if (floor < 20) set(stairUp.x, stairUp.y, '>');
+
+      set(2, 8, 'y');
+      put(2, 11, 'k');
+      put(3, 10, floor % 2 === 0 ? 'h' : 'k');
+
+      if (floor >= 4) {
+        set(8, 6, floor % 5 === 0 ? 'b' : 'y');
+        put(6, 10, floor % 5 === 0 ? 'l' : 'k');
+      }
+
+      if (floor >= 8 && floor % 2 === 0) {
+        set(10, 4, 'r');
+        put(9, 6, 'm');
+      }
+
+      put(1, 9, 'h');
+      put(11, 10, floor % 3 === 0 ? 'H' : 'h');
+      put(5, 10, 'A');
+      put(7, 10, 'D');
+      put(1, 5, floor % 2 === 0 ? 'D' : 'A');
+      put(11, 6, floor % 4 === 0 ? 'H' : 'A');
+
+      if ([3, 11].includes(floor)) put(10, 10, 'S');
+      if ([6, 14].includes(floor)) put(10, 10, 'Q');
+      if (floor === 16) put(1, 1, 'T');
+      if (floor === 18) put(1, 1, 'O');
+      if ([5, 10, 15, 19].includes(floor)) set(6, 6, '$');
+
+      placeMonsters(map, floor);
+
+      if (floor === 20) {
+        set(stairUp.x, stairUp.y, 'X');
+        set(10, 4, 'r');
+        put(9, 6, 'm');
+        put(10, 1, '9');
+        put(9, 2, '8');
+        put(10, 10, 'H');
+      }
+
+      return map;
+    }
+
+    function placeMonsters(map, floor) {
+      const tiers = getMonsterTier(floor);
+      const spots = [
+        [3, 9], [5, 6], [7, 6], [10, 5], [10, 2], [9, 10], [2, 5]
+      ];
+      spots.forEach(([x, y], index) => {
+        if (map[y][x] !== '.') return;
+        const pick = tiers[Math.min(tiers.length - 1, Math.floor(index / 2))];
+        map[y][x] = pick;
+      });
+    }
+
+    function getMonsterTier(floor) {
+      if (floor <= 3) return ['1', '2', '3'];
+      if (floor <= 6) return ['2', '3', '4'];
+      if (floor <= 9) return ['3', '4', '5'];
+      if (floor <= 12) return ['4', '5', '6'];
+      if (floor <= 15) return ['5', '6', '7'];
+      if (floor <= 18) return ['6', '7', '8'];
+      if (floor === 19) return ['7', '8', '9'];
+      return ['8', '9'];
+    }
+
+    function newGame() {
+      floors = Array.from({ length: 20 }, (_, index) => buildFloor(index + 1));
+      hero = createHero();
+      setMessage('勇者进入魔塔，目标是击败第20层魔王。');
+      update();
+    }
+
+    function currentMap() {
+      return floors[hero.floor - 1];
+    }
+
+    function setMessage(text) {
+      els.message.textContent = text;
+    }
+
+    function moveHero(dx, dy) {
+      if (hero.won) return;
+
+      const nx = hero.x + dx;
+      const ny = hero.y + dy;
+      const map = currentMap();
+      const tile = map[ny]?.[nx];
+
+      if (!tile || tile === '#') {
+        setMessage('这里是墙，无法通过。');
+        update();
+        return;
+      }
+
+      if (tile === '>') {
+        hero.floor += 1;
+        hero.x = stairDown.x;
+        hero.y = stairDown.y;
+        setMessage(`你来到了第 ${hero.floor} 层。`);
+        update();
+        return;
+      }
+
+      if (tile === '<') {
+        hero.floor -= 1;
+        hero.x = stairUp.x;
+        hero.y = stairUp.y;
+        setMessage(`你回到了第 ${hero.floor} 层。`);
+        update();
+        return;
+      }
+
+      if (doorInfo[tile]) {
+        openDoor(nx, ny, tile);
+        return;
+      }
+
+      if (monsters[tile]) {
+        fightMonster(nx, ny, tile);
+        return;
+      }
+
+      if (itemInfo[tile]) {
+        collectItem(nx, ny, tile);
+        return;
+      }
+
+      hero.x = nx;
+      hero.y = ny;
+      setMessage(tile === '$' ? '你进入了商店，可以购买属性。' : '继续探索魔塔。');
+      update();
+    }
+
+    function openDoor(x, y, tile) {
+      const info = doorInfo[tile];
+      if (hero.keys[info.key] <= 0) {
+        setMessage(`${info.name}需要对应钥匙。`);
+        update();
+        return;
+      }
+
+      hero.keys[info.key] -= 1;
+      currentMap()[y][x] = '.';
+      hero.x = x;
+      hero.y = y;
+      setMessage(`打开了${info.name}。`);
+      update();
+    }
+
+    function collectItem(x, y, tile) {
+      const item = itemInfo[tile];
+      item.apply(hero);
+      currentMap()[y][x] = '.';
+      hero.x = x;
+      hero.y = y;
+      setMessage(`获得${item.name}。`);
+      update();
+    }
+
+    function fightMonster(x, y, tile) {
+      const monster = monsters[tile];
+      const damage = calcDamage(monster);
+      if (!Number.isFinite(damage)) {
+        setMessage(`攻击不足，无法伤害${monster.name}。`);
+        update();
+        return;
+      }
+
+      if (hero.hp <= damage) {
+        setMessage(`打不过${monster.name}，预计会受到 ${damage} 点伤害。`);
+        update();
+        return;
+      }
+
+      hero.hp -= damage;
+      hero.gold += monster.gold;
+      hero.exp += monster.exp;
+      currentMap()[y][x] = '.';
+      hero.x = x;
+      hero.y = y;
+
+      if (tile === 'X') {
+        hero.won = true;
+        setMessage(`魔王倒下了！通关成功，剩余生命 ${hero.hp}。`);
+      } else {
+        setMessage(`击败${monster.name}，损失 ${damage} 生命，获得 ${monster.gold} 金币。`);
+      }
+      update();
+    }
+
+    function calcDamage(monster) {
+      const heroDamage = hero.atk - monster.def;
+      if (heroDamage <= 0) return Infinity;
+      const monsterDamage = Math.max(0, monster.atk - hero.def);
+      const rounds = Math.ceil(monster.hp / heroDamage);
+      return Math.max(0, rounds - 1) * monsterDamage;
+    }
+
+    function buy(type) {
+      if (currentMap()[hero.y][hero.x] !== '$') {
+        setMessage('需要站在商店里才能购买。');
+        return;
+      }
+
+      const price = {
+        attack: { gold: 22 + hero.shopLevel * 4, label: '攻击', apply: () => hero.atk += 4 },
+        defense: { gold: 22 + hero.shopLevel * 4, label: '防御', apply: () => hero.def += 4 },
+        health: { gold: 16 + hero.shopLevel * 3, label: '生命', apply: () => hero.hp += 650 },
+        training: { exp: 18 + hero.shopLevel * 3, label: '训练', apply: () => { hero.atk += 3; hero.def += 3; } }
+      }[type];
+
+      if (price.gold && hero.gold < price.gold) {
+        setMessage(`金币不足，需要 ${price.gold}。`);
+        return;
+      }
+
+      if (price.exp && hero.exp < price.exp) {
+        setMessage(`经验不足，需要 ${price.exp}。`);
+        return;
+      }
+
+      if (price.gold) hero.gold -= price.gold;
+      if (price.exp) hero.exp -= price.exp;
+      price.apply();
+      hero.shopLevel += 1;
+      setMessage(`${price.label}提升成功。`);
+      update();
+    }
+
+    function saveGame() {
+      const payload = {
+        hero,
+        floors: floors.map(floor => floor.map(row => row.join('')))
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      setMessage('已存档。');
+    }
+
+    function loadGame() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        setMessage('没有找到存档。');
+        return;
+      }
+
+      try {
+        const payload = JSON.parse(raw);
+        hero = payload.hero;
+        floors = payload.floors.map(floor => floor.map(row => row.split('')));
+        setMessage('已读取存档。');
+        update();
+      } catch (error) {
+        setMessage('存档损坏，读取失败。');
+      }
+    }
+
+    function update() {
+      render();
+      renderPanel();
+      renderMonsters();
+    }
+
+    function renderPanel() {
+      els.floor.textContent = hero.floor;
+      els.hp.textContent = Math.max(0, hero.hp);
+      els.atk.textContent = hero.atk;
+      els.def.textContent = hero.def;
+      els.wealth.textContent = `${hero.gold} / ${hero.exp}`;
+      els.yellowKey.textContent = hero.keys.yellow;
+      els.blueKey.textContent = hero.keys.blue;
+      els.redKey.textContent = hero.keys.red;
+
+      const isShop = currentMap()[hero.y][hero.x] === '$' && !hero.won;
+      els.shop.classList.toggle('active', isShop);
+      updateShopButtons();
+    }
+
+    function updateShopButtons() {
+      document.querySelector('[data-buy="attack"]').textContent = `攻击 +4 (${22 + hero.shopLevel * 4}金)`;
+      document.querySelector('[data-buy="defense"]').textContent = `防御 +4 (${22 + hero.shopLevel * 4}金)`;
+      document.querySelector('[data-buy="health"]').textContent = `生命 +650 (${16 + hero.shopLevel * 3}金)`;
+      document.querySelector('[data-buy="training"]').textContent = `攻防 +3 (${18 + hero.shopLevel * 3}经验)`;
+    }
+
+    function renderMonsters() {
+      const sectionTitle = '<div class="section-title">本层怪物</div>';
+      const seen = new Set();
+      const rows = [];
+      currentMap().forEach(row => row.forEach(tile => {
+        if (!monsters[tile] || seen.has(tile)) return;
+        seen.add(tile);
+        const monster = monsters[tile];
+        const damage = calcDamage(monster);
+        const damageText = Number.isFinite(damage) ? damage : '无法击杀';
+        const cls = !Number.isFinite(damage) || damage >= hero.hp ? 'damage-high' : damage > hero.hp * 0.3 ? 'damage-mid' : 'damage-low';
+        rows.push(`
+          <div class="monster-row">
+            <div><strong>${monster.name}</strong> HP${monster.hp} 攻${monster.atk} 防${monster.def}</div>
+            <div class="${cls}">${damageText}</div>
+          </div>
+        `);
+      }));
+
+      els.monsterList.innerHTML = sectionTitle + (rows.length ? rows.join('') : '<div class="monster-row"><div><strong>安全</strong> 本层没有怪物</div><div class="damage-low">0</div></div>');
+    }
+
+    function render() {
+      const map = currentMap();
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      for (let y = 0; y < SIZE; y++) {
+        for (let x = 0; x < SIZE; x++) {
+          drawTile(x, y, map[y][x]);
+        }
+      }
+
+      drawPlayer();
+      if (hero.won) drawWinOverlay();
+    }
+
+    function drawTile(x, y, tile) {
+      drawFloor(x, y);
+
+      if (tile === '#') drawWall(x, y);
+      else if (tile === '>') drawStairs(x, y, true);
+      else if (tile === '<') drawStairs(x, y, false);
+      else if (doorInfo[tile]) drawDoor(x, y, doorInfo[tile]);
+      else if (itemInfo[tile]) drawItem(x, y, itemInfo[tile]);
+      else if (tile === '$') drawShop(x, y);
+      else if (monsters[tile]) drawMonster(x, y, tile, monsters[tile]);
+    }
+
+    function drawFloor(x, y) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.fillStyle = (x + y) % 2 ? colors.floor : colors.floor2;
+      ctx.fillRect(px, py, TILE, TILE);
+      ctx.strokeStyle = colors.grid;
+      ctx.strokeRect(px + 0.5, py + 0.5, TILE - 1, TILE - 1);
+    }
+
+    function drawWall(x, y) {
+      const px = x * TILE;
+      const py = y * TILE;
+      const grad = ctx.createLinearGradient(px, py, px + TILE, py + TILE);
+      grad.addColorStop(0, colors.wall);
+      grad.addColorStop(1, colors.wallDark);
+      ctx.fillStyle = grad;
+      ctx.fillRect(px, py, TILE, TILE);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+      ctx.strokeRect(px + 6, py + 6, TILE - 12, TILE - 12);
+    }
+
+    function drawDoor(x, y, info) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.fillStyle = info.color;
+      roundRect(px + 9, py + 5, TILE - 18, TILE - 8, 5);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      ctx.fillRect(px + 20, py + 8, 2, TILE - 14);
+      ctx.beginPath();
+      ctx.arc(px + 27, py + 24, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawStairs(x, y, up) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.fillStyle = '#313b4e';
+      roundRect(px + 7, py + 7, TILE - 14, TILE - 14, 5);
+      ctx.fill();
+      ctx.strokeStyle = up ? '#8be28e' : '#f2c46f';
+      ctx.lineWidth = 3;
+      for (let i = 0; i < 4; i++) {
+        const yy = py + 12 + i * 6;
+        ctx.beginPath();
+        ctx.moveTo(px + 13 + i * 2, yy);
+        ctx.lineTo(px + 30, yy);
+        ctx.stroke();
+      }
+      ctx.lineWidth = 1;
+    }
+
+    function drawItem(x, y, item) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.save();
+      ctx.fillStyle = item.color;
+      if (['A', 'D'].includes(currentMap()[y][x])) {
+        ctx.beginPath();
+        ctx.moveTo(px + 21, py + 7);
+        ctx.lineTo(px + 34, py + 21);
+        ctx.lineTo(px + 21, py + 35);
+        ctx.lineTo(px + 8, py + 21);
+        ctx.closePath();
+        ctx.fill();
+      } else if (['h', 'H'].includes(currentMap()[y][x])) {
+        roundRect(px + 14, py + 9, 14, 26, 4);
+        ctx.fill();
+        ctx.fillStyle = '#fff6ea';
+        ctx.fillRect(px + 18, py + 15, 6, 3);
+        ctx.fillRect(px + 19.5, py + 12, 3, 9);
+      } else {
+        ctx.beginPath();
+        ctx.arc(px + 20, py + 20, 11, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.fillStyle = '#111827';
+      ctx.font = 'bold 15px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.icon, px + 21, py + 22);
+      ctx.restore();
+    }
+
+    function drawShop(x, y) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.fillStyle = '#7b4f31';
+      roundRect(px + 6, py + 11, TILE - 12, TILE - 12, 5);
+      ctx.fill();
+      ctx.fillStyle = '#f0c25f';
+      ctx.fillRect(px + 7, py + 9, TILE - 14, 8);
+      ctx.fillStyle = '#fff6db';
+      ctx.font = 'bold 17px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('商', px + 21, py + 27);
+    }
+
+    function drawMonster(x, y, code, monster) {
+      const px = x * TILE;
+      const py = y * TILE;
+      ctx.save();
+      ctx.fillStyle = monster.color;
+      ctx.beginPath();
+      ctx.arc(px + 21, py + 22, code === 'X' ? 17 : 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = code === 'X' ? '#f6d365' : '#121824';
+      ctx.font = code === 'X' ? 'bold 18px Arial' : 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(code === 'X' ? '王' : code, px + 21, py + 22);
+      ctx.restore();
+    }
+
+    function drawPlayer() {
+      const px = hero.x * TILE;
+      const py = hero.y * TILE;
+      ctx.save();
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.24)';
+      ctx.beginPath();
+      ctx.arc(px + 21, py + 31, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#2e7de1';
+      roundRect(px + 11, py + 15, 20, 18, 5);
+      ctx.fill();
+      ctx.fillStyle = '#f4c28f';
+      ctx.beginPath();
+      ctx.arc(px + 21, py + 13, 8, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#f1d56b';
+      ctx.fillRect(px + 13, py + 6, 16, 5);
+      ctx.fillStyle = '#fff8e8';
+      ctx.font = 'bold 13px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('勇', px + 21, py + 25);
+      ctx.restore();
+    }
+
+    function drawWinOverlay() {
+      ctx.save();
+      ctx.fillStyle = 'rgba(10, 16, 26, 0.72)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#fff7dd';
+      ctx.font = 'bold 36px Arial';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('通关成功', canvas.width / 2, canvas.height / 2 - 14);
+      ctx.font = '18px Arial';
+      ctx.fillText('魔塔第20层已被攻破', canvas.width / 2, canvas.height / 2 + 24);
+      ctx.restore();
+    }
+
+    function roundRect(x, y, width, height, radius) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+    }
+
+    function handleCanvasClick(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = Math.floor((event.clientX - rect.left) * (canvas.width / rect.width) / TILE);
+      const y = Math.floor((event.clientY - rect.top) * (canvas.height / rect.height) / TILE);
+      const dx = x - hero.x;
+      const dy = y - hero.y;
+      if (Math.abs(dx) + Math.abs(dy) === 1) moveHero(dx, dy);
+    }
+
+    canvas.addEventListener('click', handleCanvasClick);
+
+    document.addEventListener('keydown', event => {
+      const keyMap = {
+        ArrowUp: [0, -1], w: [0, -1], W: [0, -1],
+        ArrowDown: [0, 1], s: [0, 1], S: [0, 1],
+        ArrowLeft: [-1, 0], a: [-1, 0], A: [-1, 0],
+        ArrowRight: [1, 0], d: [1, 0], D: [1, 0]
+      };
+      if (!keyMap[event.key]) return;
+      event.preventDefault();
+      moveHero(...keyMap[event.key]);
+    });
+
+    document.querySelectorAll('[data-move]').forEach(button => {
+      button.addEventListener('click', () => {
+        const [dx, dy] = button.dataset.move.split(',').map(Number);
+        moveHero(dx, dy);
+      });
+    });
+
+    document.querySelectorAll('[data-buy]').forEach(button => {
+      button.addEventListener('click', () => buy(button.dataset.buy));
+    });
+
+    document.querySelector('#saveBtn').addEventListener('click', saveGame);
+    document.querySelector('#loadBtn').addEventListener('click', loadGame);
+    document.querySelector('#restartBtn').addEventListener('click', () => {
+      if (confirm('确定重新开始吗？当前未保存进度会丢失。')) newGame();
+    });
+
+    window.motaGame = {
+      newGame,
+      moveHero,
+      saveGame,
+      loadGame,
+      getState: () => JSON.parse(JSON.stringify({ hero, floors }))
+    };
+
+    newGame();
+  </script>
+</body>
+
+</html>
